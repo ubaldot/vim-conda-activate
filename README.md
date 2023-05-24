@@ -17,10 +17,10 @@ That's all.
 You need `conda` and Vim9.<br>
 
 You also need to be sure that your `python` environment is set properly.
-That is, be sure that the command `:echo has('python3')` return `1` and
-that the command `:python3 print('Hello world')` return `'Hello world'`.
+Be sure that you get `1` in response to  `:echo has('python3')` and
+that you get `Hello World` in response to `:python3 print('Hello world')`.
 
-If it won't happen, then you most likely have to set the `pythonthreedll` and
+If it won't happen, then you have to set the `pythonthreedll` and
 `pythonthreehome` options in Vim.
 See `:h pythonthreedll` and `:h pythonthreehome`.
 
@@ -30,16 +30,7 @@ This plugin has two commands:
 :CondaChangeEnv # Show a popup menu
 :CondaActivate myenv # Activate myenv without popup menu
 ```
-The second is handy if you want to start Vim from a certain virtual
-environment:
-
-```
-augroup CondaActivate
-    autocmd!
-    autocmd VimEnter * <Cmd>CondaActivate myenv
-augroup END
-```
-
+which, I think, are self-explanatory.
 
 ## Contributing
 Feel free to send a PR if have any improvement ideas.
