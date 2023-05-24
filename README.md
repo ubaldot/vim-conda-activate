@@ -8,7 +8,7 @@ in a Vim9 fashion. It further accommodates changes that `conda` experienced
 through the years, like the renaming `root` to `base`, the behavioral change
 of `conda deactivate` and so on and so forth.
 
-This plugin set `$CONDA_DEFAULT_ENV` and `$PATH`
+This plugin set `$CONDA_DEFAULT_ENV, $CONDA_PREFIX` and `$PATH`
 environment variables in response to Conda virtual environment change.
 That's all.
 

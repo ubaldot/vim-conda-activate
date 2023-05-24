@@ -48,6 +48,7 @@ def SetEnvVariables(env: string, prefix: string)
 
         # TODO Win, Linux, OSX
         $CONDA_DEFAULT_ENV = env
+        $CONDA_PROMPT_MODIFIER = $"({env})"
 
         # Adjust $PATH
         var bin = ""
@@ -56,6 +57,8 @@ def SetEnvVariables(env: string, prefix: string)
         else
             bin = "/bin"
         endif
+
+        $CONDA_PREFIX = prefix
 
         var path_lst = split($PATH, ':')
         remove(path_lst, index(path_lst, g:conda_current_prefix .. bin))
