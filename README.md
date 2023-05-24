@@ -1,5 +1,5 @@
 # Conda-activate
-Activate Conda environments in vim.
+Activate Conda virtual environments in vim.
 
 ## Introduction
 Conda-activate pick the inheritance of
@@ -14,12 +14,13 @@ That's all.
 
 
 ## Requirements
-You need `conda` and Vim9 and you need to be sure that your `python`
-environment is set properly.
-To verify it, be sure that the command `:echo has('python3')` return `1` and
+You need `conda` and Vim9.<br>
+
+You also need to be sure that your `python` environment is set properly.
+That is, be sure that the command `:echo has('python3')` return `1` and
 that the command `:python3 print('Hello world')` return `'Hello world'`.
 
-If that won't happen, then you most likely have to set the `pythonthreedll` and
+If it won't happen, then you most likely have to set the `pythonthreedll` and
 `pythonthreehome` options in Vim.
 See `:h pythonthreedll` and `:h pythonthreehome`.
 
@@ -30,7 +31,7 @@ This plugin has two commands:
 :CondaActivate myenv # Activate myenv without popup menu
 ```
 The second is handy if you want to start Vim from a certain virtual
-environment. For example, you can add the following to your `.vimrc`
+environment:
 
 ```
 augroup CondaActivate
