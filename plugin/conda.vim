@@ -18,7 +18,6 @@ g:conda_loaded = true
 
 # --------------------------------------------------------
 # API
-
 import autoload "../lib/condafuncs.vim"
 
 if !exists(":CondaChangeEnv")
@@ -29,6 +28,3 @@ if !exists(":CondaActivate")
     command -nargs=? CondaActivate
                 \ call <SID>condafuncs.CondaActivateUser(<f-args>)
 endif
-
-# CondaChangeEnv()
-# CondaActivateUser("myenv")

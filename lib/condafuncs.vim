@@ -5,6 +5,7 @@ def GetCondaInfoDict(): dict<any>
     return json_decode(conda_info_str)
 enddef
 
+# We made global variables to easy debugging if something goes wrong.
 def UpdateCondaInfo()
     if !exists('g:conda_info')
         g:conda_info = GetCondaInfoDict()
@@ -13,9 +14,11 @@ def UpdateCondaInfo()
         g:conda_base_prefix = g:conda_info["conda_prefix"]
     endif
     if !exists('g:conda_current_env')
+        # This may be redundant with $CONDA_DEFAULT_ENV
         g:conda_current_env = g:conda_info["active_prefix_name"]
     endif
     if !exists('g:conda_current_prefix')
+        # This also may be redundant
         g:conda_current_prefix =  g:conda_info["active_prefix"]
     endif
     if !exists('g:conda_envs')
