@@ -55,16 +55,16 @@ def SetEnvVariables(env: string, prefix: string)
         $CONDA_DEFAULT_ENV = env
         $CONDA_PROMPT_MODIFIER = $"({env})"
 
-        # Adjust $PATH
-        var bin = ""
-        if has("win32")
-            bin = "\\bin"
-        else
-            bin = "/bin"
-        endif
+        # # Adjust $PATH
+        # var bin = ""
+        # if has("win32")
+        #     bin = "\\bin"
+        # else
+        #     bin = "/bin"
+        # endif
 
         var path_lst = split($PATH, ':')
-        remove(path_lst, index(path_lst, g:conda_current_prefix .. bin))
+        remove(path_lst, index(path_lst, g:conda_current_prefix .. "/bin"))
         add(path_lst, prefix .. bin)
         g:conda_current_prefix = prefix
 
