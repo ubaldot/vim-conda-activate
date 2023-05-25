@@ -16,6 +16,9 @@ if exists('g:conda_loaded')
 endif
 g:conda_loaded = true
 
+# python3 if vim.eval('expand("<sfile>:p:h")') not in sys.path: sys.path.append(vim.eval('expand("<sfile>:p:h")'))
+g:conda_py_globals = py3eval('sys.path')
+
 # --------------------------------------------------------
 # API
 import autoload "../lib/condafuncs.vim"

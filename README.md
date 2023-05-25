@@ -1,4 +1,4 @@
-# Conda-activate
+# Conda-activate (undergoing)
 Activate Conda virtual environments in vim.
 
 ## Introduction

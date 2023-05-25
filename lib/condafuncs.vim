@@ -12,6 +12,7 @@ def UpdateCondaInfo()
     endif
     if !exists('g:conda_base_prefix')
         g:conda_base_prefix = g:conda_info["conda_prefix"]
+        $CONDA_PREFIX = g:conda_base_prefix
     endif
     if !exists('g:conda_current_env')
         # This may be redundant with $CONDA_DEFAULT_ENV
@@ -44,6 +45,7 @@ def CondaActivateUser(env: string)
 enddef
 
 def SetEnvVariables(env: string, prefix: string)
+
         g:conda_current_env = env
 
         # TODO Win, Linux, OSX
@@ -58,7 +60,6 @@ def SetEnvVariables(env: string, prefix: string)
             bin = "/bin"
         endif
 
-        $CONDA_PREFIX = prefix
 
         var path_lst = split($PATH, ':')
         remove(path_lst, index(path_lst, g:conda_current_prefix .. bin))
@@ -67,6 +68,20 @@ def SetEnvVariables(env: string, prefix: string)
 
         # TODO Win, Linux, OSX
         $PATH = join(path_lst, ':')
+
+
+        &pythonthreehome = fnamemodify(trim(system("which python")), ":h:h")
+        &pythonthreedll = trim(system("which python"))
+
+        # TODO Win. Linux, Os
+        var new_paths = prefix .. "/lib/site-packages"
+        # echom "new_paths: " .. new_paths
+        g:sys_path = add(g:conda_py_globals, new_paths)
+        # echom "uba sys_path" .. string(g:sys_path)
+        python3 import vim
+        python3 sys.path = vim.eval("g:sys_path")
+        # python3 os.environ["CONDA_DEFAULT_ENV"] = vim.eval("g:conda_current_env")
+        # python3 os.environ["PATH"] = vim.eval("$PATH")
 enddef
 
 
@@ -92,5 +107,5 @@ def CondaChangeEnv()
         {'title': " envs ",
         'borderchars': ['─', '│', '─', '│', '╭', '╮', '╯', '╰'],
         'callback': CondaActivateCallback,
-        })
+})
 enddef
