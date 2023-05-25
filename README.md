@@ -9,7 +9,7 @@ in a Vim9 fashion.  It further accommodates changes that `conda` experienced
 throughout the years.
 The plugin has been tested on **Conda 23.3.1**.
 
-This plugin set various environment variables such as `$CONDA_DEFAULT_ENV,
+Conda-Activate set various environment variables such as `$CONDA_DEFAULT_ENV,
 $CONDA_PREFIX` and `$PATH`, set the internal `sys.path` and set the
 `pythonthreehome` and `pythonthreedll` options.
 
@@ -38,8 +38,15 @@ This plugin has one command `CondaActivate` that take one optional argument:
 :CondaActivate myenv # Activate myenv without popup menu
 ```
 
+## Credits
+Thanks to [vim-conda](https://github.com/cjrh/vim-conda) that paved the way.
+I would have never done this plugin without reading (and learning)
+from [vim-conda](https://github.com/cjrh/vim-conda) source code.
+
+
 ## Contributing
 Feel free to send a PR if have any improvement ideas.
+
 
 ## License
 Same as Vim.

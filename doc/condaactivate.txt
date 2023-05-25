@@ -14,8 +14,9 @@ CONTENTS                                          *CondaActivateContents*
     1. Introduction ................. |CondaActivateIntroduction|
     2. Requirements ................. |CondaActivateRequirements|
     3. Usage ........................ |CondaActivateUsage|
-    4. Contributing ................. |CondaActivateContributing|
-    5. License ...................... |CondaActivateLicense|
+    4. Credits ...................... |CondaActivateCredits|
+    5. Contributing ................. |CondaActivateContributing|
+    6. License ...................... |CondaActivateLicense|
 
 
 ==============================================================================
@@ -55,8 +56,16 @@ This plugin has one command :CondaActivate that take one optional argument:
     :CondaActivate # Show a popup menu
     :CondaActivate myenv # Activate myenv without popup menu
 <
+
 ==============================================================================
-CONTRIBUTING                                 *CondaActivateContributing*
+CREDITS                                              *CondaActivateCredits*
+
+Thanks to [vim-conda](https://github.com/cjrh/vim-conda) that paved the way.
+I would have never done this plugin without reading (and learning)
+from [vim-conda](https://github.com/cjrh/vim-conda) source code.
+
+==============================================================================
+CONTRIBUTING                                     *CondaActivateContributing*
 
 Feel free to send a PR if have any improvement ideas.
 
