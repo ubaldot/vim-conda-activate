@@ -1,5 +1,5 @@
 # Conda-activate
-Activate Conda virtual environments in vim.
+Activate Conda virtual environments in Vim.
 
 
 ## Introduction
@@ -25,7 +25,7 @@ You need *conda* and *Vim9*.<br>
 
 You also need  your `python` environment set properly.
 Be sure that you get `1` in response to  `:echo has('python3')` and
- `Hello World` in response to `:python3 print('Hello world')`.
+ `Hello World` in response to `:python3 print('Hello World')`.
 
 If it won't happen, then you have to set the `pythonthreedll` and
 `pythonthreehome` options in Vim.
