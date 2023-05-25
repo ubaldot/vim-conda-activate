@@ -7,9 +7,10 @@ Conda-activate picks the inheritance of
 [vim-conda](https://github.com/cjrh/vim-conda) by providing the same features
 in a Vim9 fashion.  It further accommodates changes that `conda` experienced
 throughout the years.
+The plugin has been tested on **Conda 23.3.1**.
 
 This plugin set various environment variables such as `$CONDA_DEFAULT_ENV,
-$CONDA_PREFIX` and `$PATH`, set the internal `sys.path` and the
+$CONDA_PREFIX` and `$PATH`, set the internal `sys.path` and set the
 `pythonthreehome` and `pythonthreedll` options.
 
 >**Note**
@@ -20,7 +21,7 @@ $CONDA_PREFIX` and `$PATH`, set the internal `sys.path` and the
 
 
 ## Requirements
-You need `conda` and Vim9.<br>
+You need *conda* and *Vim9*.<br>
 
 You also need  your `python` environment set properly.
 Be sure that you get `1` in response to  `:echo has('python3')` and

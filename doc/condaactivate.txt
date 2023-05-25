@@ -27,7 +27,7 @@ in a Vim9 fashion.  It further accommodates changes that conda experienced
 throughout the years.
 
 This plugin set various environment variables such as $CONDA_DEFAULT_ENV,
-$CONDA_PREFIX and $PATH, it set the internal sys.path and the
+$CONDA_PREFIX and $PATH, set the internal sys.path and set the
 'pythonthreehome' and 'pythonthreedll' options.
 
 ** Note **
@@ -40,9 +40,9 @@ REQUIREMENTS                                     *CondaActivateRequirements*
 
 You need conda and Vim9.
 
-You also need to be sure that your 'python' environment is set properly.
+You also need your 'python' set properly.
 Be sure that you get 1 in response to  :echo has('python3') and
-that you get Hello World in response to :python3 print('Hello world').
+Hello World in response to :python3 print('Hello world').
 
 If it won't happen, then you have to set the 'pythonthreedll' and
 'pythonthreehome' options in Vim.
