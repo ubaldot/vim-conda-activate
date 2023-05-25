@@ -1,0 +1,65 @@
+*condaactivate.txt*                    Activate Conda environments in Vim.
+
+   _____                 _                        _   _            _~
+  /  __ \               | |                      | | (_)          | |~
+  | /  \/ ___  _ __   __| | __ _ ______ __ _  ___| |_ ___   ____ _| |_ ___~
+  | |    / _ \| '_ \ / _` |/ _` |______/ _` |/ __| __| \ \ / / _` | __/ _ \~
+  | \__/\ (_) | | | | (_| | (_| |     | (_| | (__| |_| |\ V / (_| | ||  __/~
+   \____/\___/|_| |_|\__,_|\__,_|      \__,_|\___|\__|_| \_/ \__,_|\__\___|~
+
+
+==============================================================================
+CONTENTS                                          *CondaActivateContents*
+
+    1. Introduction ................. |CondaActivateIntroduction|
+    2. Requirements ................. |CondaActivateRequirements|
+    3. Usage ........................ |CondaActivateUsage|
+    4. Contributing ................. |CondaActivateContributing|
+    5. License ...................... |CondaActivateLicense|
+
+
+==============================================================================
+INTRODUCTION                                  *CondaActivateIntroduction*
+
+Conda-activate pick the inheritance of
+[vim-conda](https://github.com/cjrh/vim-conda) by providing the same features
+in a Vim9 fashion.  It further accommodates changes that conda experienced
+throughout the years.
+
+This plugin set various environment variables such as $CONDA_DEFAULT_ENV,
+$CONDA_PREFIX and $PATH, it set the internal sys.path and the
+'pythonthreehome' and 'pythonthreedll' options.
+
+** Note **
+The plugin appear to work on MacOSX Ventura, but has not been tested on
+Linux and  Windows.
+If someone want to give it a shot on such OS:s I would be grateful.
+
+==============================================================================
+REQUIREMENTS                                     *CondaActivateRequirements*
+
+You need conda and Vim9.
+
+You also need to be sure that your 'python' environment is set properly.
+Be sure that you get 1 in response to  :echo has('python3') and
+that you get Hello World in response to :python3 print('Hello world').
+
+If it won't happen, then you have to set the 'pythonthreedll' and
+'pythonthreehome' options in Vim.
+
+==============================================================================
+USAGE                                                  *CondaActivateUsage*
+
+This plugin has one command :CondaActivate that take one optional argument:
+>
+    :CondaActivate # Show a popup menu
+    :CondaActivate myenv # Activate myenv without popup menu
+<
+==============================================================================
+CONTRIBUTING                                 *CondaActivateContributing*
+
+Feel free to send a PR if have any improvement ideas.
+
+==============================================================================
+LICENSE                                            *CondaActivateLicense*
+Same as Vim.

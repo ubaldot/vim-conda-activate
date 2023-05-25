@@ -24,11 +24,7 @@ g:conda_py_globals = py3eval('sys.path')
 # API
 import autoload "../lib/condafuncs.vim"
 
-if !exists(":CondaChangeEnv")
-    command CondaChangeEnv call <SID>condafuncs.CondaChangeEnv()
-endif
-
 if !exists(":CondaActivate")
     command -nargs=? CondaActivate
-                \ call <SID>condafuncs.CondaActivateUser(<f-args>)
+                \ call <SID>condafuncs.CondaActivate(<f-args>)
 endif
