@@ -18,10 +18,8 @@ $CONDA_PREFIX` and `$PATH`, set the internal `sys.path` and set the
 
 >**Note**
 >
-> The plugin appear to work on MacOSX Ventura, but has not been tested on
-> Linux and  Windows.
-> If someone want to give it a shot on such OS:s I would be very grateful.
-
+> The plugin does not work on Windows (yet)!
+>
 
 ## Requirements
 You need *conda* and *Vim9*.<br>
