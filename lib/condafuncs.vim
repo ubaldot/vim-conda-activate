@@ -16,8 +16,11 @@ def SetEnvVariables(env: string, prefix: string)
         $PATH = join(path_lst, ':')
 
         # 2) Set Vim options
-        &pythonthreehome = fnamemodify(trim(system("which python")), ":h:h")
-        &pythonthreedll = trim(system("which python"))
+        # TODO: the pythonthreedll is wrong.
+        # &pythonthreehome = fnamemodify(trim(systemlist("which python")[0]), ":h:h")
+        # &pythonthreedll = trim(systemlist("which python")[0])
+        &pythonthreehome =  g:conda_current_prefix
+        &pythonthreedll = g:conda_current_prefix .. "/bin/python"
 
         # 3) Set internal sys.path
         var new_paths = prefix .. "/lib/site-packages"
