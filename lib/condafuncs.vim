@@ -10,7 +10,7 @@ def SetEnvVariables(env: string, prefix: string)
         $CONDA_PROMPT_MODIFIER = $"({env})"
 
         var bin_path = ""
-        if has('win32') || has('gui_win32')
+        if has('win32') # TODO add gui_win32
             bin_path = "/Scripts"
         else
             bin_path = "/bin"
