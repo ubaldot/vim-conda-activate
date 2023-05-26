@@ -18,7 +18,7 @@ $CONDA_PREFIX` and `$PATH`, set the internal `sys.path` and set the
 
 >**Note**
 >
-> The plugin does not work on Windows (yet)!
+> The plugin does not work on Windows very well (yet)!
 >
 
 ## Requirements
