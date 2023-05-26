@@ -1,6 +1,9 @@
 # Conda-activate
 Activate Conda virtual environments in Vim.
 
+<p align="center">
+<img src="/Conda.gif" width="60%" height="60%">
+</p>
 
 ## Introduction
 Conda-activate picks the inheritance of
