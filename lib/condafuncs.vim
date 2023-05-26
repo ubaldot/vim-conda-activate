@@ -9,18 +9,24 @@ def SetEnvVariables(env: string, prefix: string)
         $CONDA_DEFAULT_ENV = env
         $CONDA_PROMPT_MODIFIER = $"({env})"
 
+        var bin_path = ""
+        if has('win32') || has('gui_win32')
+            bin_path = "/Scripts"
+        else
+            bin_path = "/bin"
+        endif
+
+
         var path_lst = split($PATH, ':')
-        remove(path_lst, index(path_lst, g:conda_current_prefix .. "/bin"))
-        add(path_lst, prefix .. "/bin")
+        remove(path_lst, index(path_lst, g:conda_current_prefix .. bin_path))
+        add(path_lst, prefix .. bin_path)
         g:conda_current_prefix = prefix
         $PATH = join(path_lst, ':')
 
         # 2) Set Vim options
         # TODO: the pythonthreedll is wrong.
-        # &pythonthreehome = fnamemodify(trim(systemlist("which python")[0]), ":h:h")
-        # &pythonthreedll = trim(systemlist("which python")[0])
         &pythonthreehome =  g:conda_current_prefix
-        &pythonthreedll = g:conda_current_prefix .. "/bin/python"
+        &pythonthreedll = g:conda_current_prefix .. bin_path .. "/python"
 
         # 3) Set internal sys.path
         var new_paths = prefix .. "/lib/site-packages"
