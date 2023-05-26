@@ -25,7 +25,7 @@ def SetEnvVariables(env: string, prefix: string)
         python3 import vim
         python3 sys.path = vim.eval("g:sys_path")
         # The following don't seem to be needed as Vim use the Unix format for
-        # setting environment variables
+        # setting environment variables and we already set them.
         # python3 os.environ["CONDA_DEFAULT_ENV"] = vim.eval("g:conda_current_env")
         # python3 os.environ["PATH"] = vim.eval("$PATH")
 enddef

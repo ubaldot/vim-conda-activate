@@ -28,6 +28,7 @@ endif
 if !exists('g:conda_base_prefix')
     g:conda_base_prefix = g:conda_info["conda_prefix"]
     # This syntax appear to work both on Windows and Linux/OSX.
+    # This should be where conda command is located.
     $CONDA_PREFIX = g:conda_base_prefix
 endif
 
@@ -48,7 +49,6 @@ if !exists('g:conda_prefixes') && !exists('g:conda_envs')
         add(g:conda_envs, fnamemodify(env, ":t"))
     endfor
 endif
-
 
 
 # --------------------------------------------------------
