@@ -6,9 +6,9 @@ vim9script noclear
 # License: Vim license
 
 if !has('vim9script') ||  v:version < 900
-  # Needs Vim version 9.0 and above
-  echo "You need at least Vim 9.0"
-  finish
+    # Needs Vim version 9.0 and above
+    echo "You need at least Vim 9.0"
+    finish
 endif
 
 if exists('g:conda_loaded')
@@ -17,7 +17,8 @@ endif
 g:conda_loaded = true
 
 # The commented line should not be needed.
-# python3 if vim.eval('expand("<sfile>:p:h")') not in sys.path: sys.path.append(vim.eval('expand("<sfile>:p:h")'))
+# python3 if vim.eval('expand("<sfile>:p:h")') not in sys.path:
+# sys.path.append(vim.eval('expand("<sfile>:p:h")'))
 g:conda_py_globals = py3eval('sys.path')
 
 # Initialize Conda info.
@@ -50,15 +51,19 @@ if !exists('g:conda_prefixes') && !exists('g:conda_envs')
     endfor
 endif
 
+# ---------------------------------------------------
+# Init
+import autoload "../lib/condafuncs.vim"
+
+if has('win32')
+    condafuncs.SetEnvVariablesWin(g:conda_current_env, g:conda_current_prefix)
+else
+    condafuncs.SetEnvVariables(g:conda_current_env, g:conda_current_prefix)
+endif
 
 # --------------------------------------------------------
 # API
-import autoload "../lib/condafuncs.vim"
-
-# Init
-condafuncs.SetEnvVariables(g:conda_current_env, g:conda_current_prefix)
-
 if !exists(":CondaActivate")
     command -nargs=? -complete=customlist,condafuncs.CondaComplete
-            \ CondaActivate call <SID>condafuncs.CondaActivate(<f-args>)
+                \ CondaActivate call <SID>condafuncs.CondaActivate(<f-args>)
 endif

@@ -1,5 +1,72 @@
 vim9script
 
+export def SetEnvVariablesWin(env: string, prefix: string)
+        # This should be the only function of the plugin that kinda depends on the OS
+        # TODO: This is how Windows installs Miniconda: many folders!
+        # I expect this to be uniformed to other OS:s in the future
+        # C:\Users\yt75534\Miniconda3;
+        # C:\Users\yt75534\Miniconda3\Library\mingw-w64\bin;
+        # C:\Users\yt75534\Miniconda3\Library\usr\bin;
+        # C:\Users\yt75534\Miniconda3\Library\bin;
+        # C:\Users\yt75534\Miniconda3\Scripts;
+        # C:\Users\yt75534\Miniconda3\bin;
+
+        # C:\Users\yt75534\Miniconda3\envs\myenv;
+        # C:\Users\yt75534\Miniconda3\envs\myenv\Library\mingw-w64\bin;
+        # C:\Users\yt75534\Miniconda3\envs\myenv\Library\usr\bin;
+        # C:\Users\yt75534\Miniconda3\envs\myenv\Library\bin;
+        # C:\Users\yt75534\Miniconda3\envs\myenv\Scripts;
+        # C:\Users\yt75534\Miniconda3\envs\myenv\bin;
+        #
+        # Then, you have the following that are always present
+        # C:\Users\yt75534\Miniconda3;
+        # C:\Users\yt75534\Miniconda3\condabin;
+        #
+        # Therefore, if C:\Users\yt75534\Miniconda3 is added and removed, you
+        # always have a second one.
+        #
+        # 1) Set environment variables
+        g:conda_current_env = env
+
+        $CONDA_DEFAULT_ENV = env
+        $CONDA_PROMPT_MODIFIER = $"({env})"
+
+        var path1 = "\\Library\\mingw-w64\\bin"
+        var path2 = "\\Library\\usr\\bin"
+        var path3 = "\\Library\\bin"
+        var path4 = "\\Scripts"
+        var path5 = "\\bin"
+        var conda_paths = [path1, path2, path3, path4, path5]
+
+        var path_lst = split($PATH, ':')
+        for path in conda_paths
+            remove(path_lst, index(path_lst, g:conda_current_prefix .. path))
+            add(path_lst, prefix .. path)
+        endfor
+        g:conda_current_prefix = prefix
+        $PATH = join(path_lst, ':')
+
+        # 2) Set Vim options
+        # TODO: the pythonthreedll is wrong.
+        &pythonthreehome =  g:conda_current_prefix
+        &pythonthreedll = g:conda_current_prefix .. "\\python"
+        $CONDA_PYTHON_EXE = g:conda_current_prefix .. "\\python"
+
+        # 3) Set internal sys.path
+        # TODO The following seems to be independent of the current env in
+        # windows, just compare the output of :python3 print(sys.path) from
+        # different venv in windows
+        #
+        # var new_paths = prefix .. "/lib/site-packages"
+        # g:sys_path = add(g:conda_py_globals, new_paths)
+        # python3 import vim
+        # python3 sys.path = vim.eval("g:sys_path")
+        # The following don't seem to be needed as Vim use the Unix format for
+        # setting environment variables and we already set them.
+        # python3 os.environ["CONDA_DEFAULT_ENV"] = vim.eval("g:conda_current_env")
+        # python3 os.environ["PATH"] = vim.eval("$PATH")
+enddef
+
 export def SetEnvVariables(env: string, prefix: string)
         # This should be the only function of the plugin that kinda depends on the OS
 
@@ -9,28 +76,17 @@ export def SetEnvVariables(env: string, prefix: string)
         $CONDA_DEFAULT_ENV = env
         $CONDA_PROMPT_MODIFIER = $"({env})"
 
-        var bin_path = ""
-        var python_path = ""
-        if has('win32') # TODO add gui_win32
-            bin_path = "/Scripts"
-            python_path = ""
-        else
-            bin_path = "/bin"
-            python_path = bin_path
-        endif
-
-
         var path_lst = split($PATH, ':')
-        remove(path_lst, index(path_lst, g:conda_current_prefix .. bin_path))
-        add(path_lst, prefix .. bin_path)
+        remove(path_lst, index(path_lst, g:conda_current_prefix .. "/bin"))
+        add(path_lst, prefix .. "/bin")
         g:conda_current_prefix = prefix
         $PATH = join(path_lst, ':')
 
         # 2) Set Vim options
         # TODO: the pythonthreedll is wrong.
         &pythonthreehome =  g:conda_current_prefix
-        &pythonthreedll = g:conda_current_prefix .. python_path .. "/python"
-        $CONDA_PYTHON_EXE = g:conda_current_prefix .. python_path .. "/python"
+        &pythonthreedll = g:conda_current_prefix .. "bin/python"
+        $CONDA_PYTHON_EXE = g:conda_current_prefix .. "bin/python"
 
         # 3) Set internal sys.path
         var new_paths = prefix .. "/lib/site-packages"
@@ -53,8 +109,11 @@ def CondaActivateUser(env: string)
 
     if index(keys(prefixes), env) == -1
         echo $"{env} environment not found."
+    elseif has('win32')
+        SetEnvVariablesWin(env, prefixes[env])
     else
         SetEnvVariables(env, prefixes[env])
+    endif
     endif
 enddef
 
@@ -62,7 +121,11 @@ def CondaActivatePopupCallback(id: number, env_idx: number)
     # Callback of the popup menu.
     var target_prefix = g:conda_prefixes[env_idx - 1]
     var target_env = fnamemodify(target_prefix, ":t")
-    SetEnvVariables(target_env, target_prefix)
+    if has('win32')
+        SetEnvVariablesWin(target_env, target_prefix)
+    else
+        SetEnvVariables(target_env, target_prefix)
+    endif
 enddef
 
 
@@ -84,5 +147,6 @@ export def CondaActivate(...env: list<string>)
 enddef
 
 export def CondaComplete(arglead: string, cmdline: string, cursorPos: number): list<string>
+    # This is used in "command -preview=..." in the plugin file.
     return g:conda_envs->filter((_, val) => val =~ $'^{arglead}')
 enddef
