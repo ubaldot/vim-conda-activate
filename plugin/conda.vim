@@ -55,6 +55,9 @@ endif
 # API
 import autoload "../lib/condafuncs.vim"
 
+# Init
+condafuncs.SetEnvVariables(g:conda_current_env, g:conda_current_prefix)
+
 if !exists(":CondaActivate")
     command -nargs=? -complete=customlist,condafuncs.CondaComplete
             \ CondaActivate call <SID>condafuncs.CondaActivate(<f-args>)

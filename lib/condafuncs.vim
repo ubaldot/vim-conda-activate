@@ -1,6 +1,6 @@
 vim9script
 
-def SetEnvVariables(env: string, prefix: string)
+export def SetEnvVariables(env: string, prefix: string)
         # This should be the only function of the plugin that kinda depends on the OS
 
         # 1) Set environment variables
@@ -27,6 +27,7 @@ def SetEnvVariables(env: string, prefix: string)
         # TODO: the pythonthreedll is wrong.
         &pythonthreehome =  g:conda_current_prefix
         &pythonthreedll = g:conda_current_prefix .. bin_path .. "/python"
+        $CONDA_PYTHON_EXE = g:conda_current_prefix .. bin_path .. "/python"
 
         # 3) Set internal sys.path
         var new_paths = prefix .. "/lib/site-packages"
