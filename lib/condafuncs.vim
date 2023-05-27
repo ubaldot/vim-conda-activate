@@ -31,23 +31,31 @@ export def SetEnvVariablesWin(env: string, prefix: string)
         $CONDA_DEFAULT_ENV = env
         $CONDA_PROMPT_MODIFIER = $"({env})"
 
-        var path1 = "\\Library\\mingw-w64\\bin"
-        var path2 = "\\Library\\usr\\bin"
-        var path3 = "\\Library\\bin"
-        var path4 = "\\Scripts"
-        var path5 = "\\bin"
-        var conda_paths = [path1, path2, path3, path4, path5]
+        # Remove old folders
+        var path1 = g:conda_current_prefix .. "\\Library\\mingw-w64\\bin"
+        var path2 = g:conda_current_prefix .. "\\Library\\usr\\bin"
+        var path3 = g:conda_current_prefix .. "\\Library\\bin"
+        var path4 = g:conda_current_prefix .. "\\Scripts"
+        var path5 = g:conda_current_prefix .. "\\bin"
+        var conda_paths = [g:conda_current_prefix, path1, path2, path3, path4, path5]
 
-        var path_lst = split($PATH, ':')
+        var path_lst = split($PATH, ';')
         for path in conda_paths
-            remove(path_lst, index(path_lst, g:conda_current_prefix .. path))
-            add(path_lst, prefix .. path)
+            remove(path_lst, index(path_lst, path))
         endfor
+
+        # Add new folders
+        path1 = prefix .. "\\Library\\mingw-w64\\bin"
+        path2 = prefix .. "\\Library\\usr\\bin"
+        path3 = prefix .. "\\Library\\bin"
+        path4 = prefix .. "\\Scripts"
+        path5 = prefix .. "\\bin"
+        conda_paths = [prefix, path1, path2, path3, path4, path5]
+        path_lst = conda_paths + path_lst
         g:conda_current_prefix = prefix
-        $PATH = join(path_lst, ':')
+        $PATH = join(path_lst, ';')
 
         # 2) Set Vim options
-        # TODO: the pythonthreedll is wrong.
         &pythonthreehome =  g:conda_current_prefix
         &pythonthreedll = g:conda_current_prefix .. "\\python"
         $CONDA_PYTHON_EXE = g:conda_current_prefix .. "\\python"
@@ -113,7 +121,6 @@ def CondaActivateUser(env: string)
         SetEnvVariablesWin(env, prefixes[env])
     else
         SetEnvVariables(env, prefixes[env])
-    endif
     endif
 enddef
 
