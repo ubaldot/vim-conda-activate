@@ -16,7 +16,7 @@ Conda-Activate set various environment variables such as `$CONDA_DEFAULT_ENV,
 $CONDA_PREFIX`, `$PATH`, etc., and set the
 `pythonthreehome` and `pythonthreedll` options.
 
-The internal `sys.path` is not changed and things seem to work (perhaps it should?).
+The internal `sys.path` is not adequately updated... yet.
 
 ### For Windows users.
 Be sure to start vim (or gvim) from an *Anaconda* or an *Anaconda powershell*

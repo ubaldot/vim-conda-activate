@@ -103,8 +103,9 @@ export def SetEnvVariables(env: string, prefix: string)
         # TODO: check python3 print(sys.path). This is weird and may need a
         # fix.
         # Do something like
-        # var py_ver = system('python --version'))
-        # and then use substitute()
+        var py_ver_dot = system('python --version')->matchstr('\d\+.\d\+')
+        #
+        echom $"py_ver_dot: {py_ver_dot}"
         #
         # OBS! This may not be needed!
         # var new_paths = prefix .. "/lib/site-packages"
