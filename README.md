@@ -13,24 +13,30 @@ throughout the years.
 The plugin has been tested on **Conda 23.3.1**.
 
 Conda-Activate set various environment variables such as `$CONDA_DEFAULT_ENV,
-$CONDA_PREFIX`, `$PATH`, etc., set the internal `sys.path` and set the
+$CONDA_PREFIX`, `$PATH`, etc., and set the
 `pythonthreehome` and `pythonthreedll` options.
+
+The internal `sys.path` is not changed and things seem to work (perhaps it should?).
 
 ### For Windows users.
 Be sure to start vim (or gvim) from an *Anaconda* or an *Anaconda powershell*
 prompt.
 If you start vim/gvim by double clicking on their icons or from an ordinary
-`cmd.exe` or `powershell` shell without activate any environment, then `conda`
-won't be initialized and the plugin will not work.
+`cmd.exe` or `powershell` shell without activating any environment, then
+`conda` won't be initialized and the plugin will not work.
 
 If you really want to open vim/gvim through a double clickable icon, then
 consider to create a batch file like the following:
 
 ```
 @echo off
-call C:\Users\yt75534\Miniconda3\condabin\activate.bat C:\Users\yt75534\Miniconda3\envs\myenv
+call C:\Users\yt75534\Miniconda3\condabin\activate.bat
+C:\Users\yt75534\Miniconda3\envs\myenv
 gvim
 ```
+
+Finally, in the list of possible environments, the one with a strange name
+like `Miniconda3`, `Anaconda`, etc. is the `base` environment.
 
 ## Requirements
 You need *conda* and *Vim9*.<br>

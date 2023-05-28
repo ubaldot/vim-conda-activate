@@ -85,26 +85,39 @@ export def SetEnvVariables(env: string, prefix: string)
         $CONDA_PROMPT_MODIFIER = $"({env})"
 
         var path_lst = split($PATH, ':')
-        remove(path_lst, index(path_lst, g:conda_current_prefix .. "/bin"))
-        add(path_lst, prefix .. "/bin")
-        g:conda_current_prefix = prefix
+        var old_path = g:conda_current_prefix .. "/bin"
+        var new_path = prefix .. "/bin"
+        remove(path_lst, index(path_lst, old_path))
+        # Conda's python on top in case of multiple python installations
+        path_lst = [new_path] + path_lst
+
         $PATH = join(path_lst, ':')
 
         # 2) Set Vim options
         # TODO: the pythonthreedll is wrong.
-        &pythonthreehome =  g:conda_current_prefix
-        &pythonthreedll = g:conda_current_prefix .. "bin/python"
-        $CONDA_PYTHON_EXE = g:conda_current_prefix .. "bin/python"
+        &pythonthreehome =  prefix
+        &pythonthreedll = prefix .. "bin/python"
+        $CONDA_PYTHON_EXE = prefix .. "bin/python"
 
         # 3) Set internal sys.path
-        var new_paths = prefix .. "/lib/site-packages"
-        g:sys_path = add(g:conda_py_globals, new_paths)
-        python3 import vim
-        python3 sys.path = vim.eval("g:sys_path")
+        # TODO: check python3 print(sys.path). This is weird and may need a
+        # fix.
+        # Do something like
+        # var py_ver = system('python --version'))
+        #
+        # OBS! This may not be needed!
+        # var new_paths = prefix .. "/lib/site-packages"
+        # g:sys_path = add(g:conda_py_globals, new_paths)
+        # python3 import vim
+        # python3 sys.path = vim.eval("g:sys_path")
         # The following don't seem to be needed as Vim use the Unix format for
         # setting environment variables and we already set them.
         # python3 os.environ["CONDA_DEFAULT_ENV"] = vim.eval("g:conda_current_env")
         # python3 os.environ["PATH"] = vim.eval("$PATH")
+        #
+
+        # Refresh variables
+        g:conda_current_prefix = prefix
 enddef
 
 def CondaActivateUser(env: string)
