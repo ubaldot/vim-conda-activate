@@ -104,6 +104,7 @@ export def SetEnvVariables(env: string, prefix: string)
         # fix.
         # Do something like
         # var py_ver = system('python --version'))
+        # and then use substitute()
         #
         # OBS! This may not be needed!
         # var new_paths = prefix .. "/lib/site-packages"
