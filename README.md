@@ -30,21 +30,23 @@ If it won't happen, then you have to set the `pythonthreedll` and
 `pythonthreehome` options in Vim.
 See `:h pythonthreedll` and `:h pythonthreehome`.
 
+
 >**Note for Windows users**.<br>
 >Be sure to start vim (or gvim) from an *Anaconda* or an *Anaconda powershell*
 >prompt.<br>
->If you start *vim* or *gvim* by double clicking on their icons or from an ordinary
+>If you start *vim* or *gvim* from an ordinary
 >`cmd.exe` or `powershell` shell where `conda` no virtual
 > environment is activated, then this plugin will not work.
+> The same if you start them by double-clicking on their icons.
 >
 >If you really want to open vim/gvim through a double clickable icon, then
 >consider to create a batch file like the following:
 >
->```
->@echo off
->call C:\Users\yourname\Miniconda3\condabin\activate.bat C:\Users\yourname\Miniconda3\envs\myenv
->gvim
->```
+```
+@echo off
+call C:\Users\yourname\Miniconda3\condabin\activate.bat C:\Users\yourname\Miniconda3\envs\myenv
+gvim
+```
 >
 > Such a batch file will simply activate a virtual environment first, and then
 > will starrt gvim. At that point, you can freely use this plugin.
