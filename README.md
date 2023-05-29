@@ -18,9 +18,9 @@ $CONDA_PREFIX`, `$PATH`, etc., and set the
 
 The internal `sys.path` is also set for Linux and MacOSX, not yet for Windows.
 
->**Note** **For Windows users**.<br>
+>**Note for Windows users**.<br>
 >Be sure to start vim (or gvim) from an *Anaconda* or an *Anaconda powershell*
->prompt.
+>prompt.<br>
 >If you start vim/gvim by double clicking on their icons or from an ordinary
 >`cmd.exe` or `powershell` shell without activating any environment, then
 >`conda` won't be initialized and the plugin will not work.
