@@ -96,22 +96,42 @@ export def SetEnvVariables(env: string, prefix: string)
         # 2) Set Vim options
         # TODO: the pythonthreedll is wrong.
         &pythonthreehome =  prefix
-        &pythonthreedll = prefix .. "bin/python"
-        $CONDA_PYTHON_EXE = prefix .. "bin/python"
+        &pythonthreedll = prefix .. "/bin/python"
+        $CONDA_PYTHON_EXE = prefix .. "/bin/python"
 
         # 3) Set internal sys.path
         # TODO: check python3 print(sys.path). This is weird and may need a
         # fix.
         # Do something like
-        var py_ver_dot = system('python --version')->matchstr('\d\+.\d\+')
-        #
-        echom $"py_ver_dot: {py_ver_dot}"
-        #
+        var py_ver_dot = system('python --version')->matchstr('\d\+.\d\+') # e.g. 3.11
+        var py_ver_nodot = substitute(py_ver_dot, '\.', '', 'g') # e.g.  311
+        # Paths to remove
+        var path1 = g:conda_current_prefix .. $"/lib/python{py_ver_nodot}.zip"
+        var path2 = g:conda_current_prefix .. $"/lib/python{py_ver_dot}"
+        var path3 = g:conda_current_prefix .. $"/lib/python{py_ver_dot}/lib-dynload"
+        var path4 = g:conda_current_prefix .. $"/lib/python{py_ver_dot}/site-packages"
+        var paths = [path1, path2, path3, path4]
+        g:python_sys_path = py3eval('sys.path')
+
+        for path in paths
+            remove(g:python_sys_path, index(g:python_sys_path, path))
+        endfor
+
+        path1 = prefix .. $"/lib/python{py_ver_nodot}.zip"
+        path2 = prefix .. $"/lib/python{py_ver_dot}"
+        path3 = prefix .. $"/lib/python{py_ver_dot}/lib-dynload"
+        path4 = prefix .. $"/lib/python{py_ver_dot}/site-packages"
+        paths = [path1, path2, path3, path4]
+        g:python_sys_path = paths + g:python_sys_path
+
+        echom $"g:python_sys_path: {g:python_sys_path}"
+
+        # Add paths
         # OBS! This may not be needed!
         # var new_paths = prefix .. "/lib/site-packages"
         # g:sys_path = add(g:conda_py_globals, new_paths)
-        # python3 import vim
-        # python3 sys.path = vim.eval("g:sys_path")
+        python3 import vim
+        python3 sys.path = vim.eval("g:python_sys_path")
         # The following don't seem to be needed as Vim use the Unix format for
         # setting environment variables and we already set them.
         # python3 os.environ["CONDA_DEFAULT_ENV"] = vim.eval("g:conda_current_env")

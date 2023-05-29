@@ -16,11 +16,6 @@ if exists('g:conda_loaded')
 endif
 g:conda_loaded = true
 
-# The commented line should not be needed.
-# python3 if vim.eval('expand("<sfile>:p:h")') not in sys.path:
-# sys.path.append(vim.eval('expand("<sfile>:p:h")'))
-g:conda_py_globals = py3eval('sys.path')
-
 # Initialize Conda info.
 if !exists('g:conda_info')
     g:conda_info = json_decode(system('conda info --json'))
