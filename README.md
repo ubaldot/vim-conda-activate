@@ -28,19 +28,20 @@ Be sure that you get `1` in response to  `:echo has('python3')` and
 
 If it won't happen, then you have to set the `pythonthreedll` and
 `pythonthreehome` options in Vim.
-See `:h pythonthreedll` and `:h pythonthreehome`.<br><br><br>
+See `:h pythonthreedll` and `:h pythonthreehome`.<br><br>
 
 
 >**Note for Windows users**.<br>
 >Be sure to start vim (or gvim) from an *Anaconda* or an *Anaconda powershell*
 >prompt.<br>
 >If you start *vim* or *gvim* from an ordinary
->`cmd.exe` or `powershell` shell where `conda` no virtual
-> environment is activated, then this plugin will not work.
+>`cmd.exe` or `powershell` shell where no `conda` virtual
+>environment is activated, then this plugin will not work.
 >
-> The same happens if you start them by double-clicking on their icons.
+>The same happens if you start *vim/gvim* by double-clicking on their icons.
+>Most likely they will start without any *conda* initialization.
 >If you want to open vim/gvim through clickable icon, then
->consider to create a batch file with something like the following content:
+>consider to create a batch file with a content similar to the following:
 >
 ```
 @echo off
@@ -48,8 +49,8 @@ call C:\Users\yourname\Miniconda3\condabin\activate.bat C:\Users\yourname\Minico
 gvim
 ```
 >
-> Such a batch file activate a virtual environment first, and then
-> start gvim.
+>Such a batch file activate a virtual environment first, and then
+>start gvim.
 >
 >Finally, in the list of all the available virtual environments, those named
 >like `Miniconda3`, `Anaconda`, etc. represent the `base` environment.
