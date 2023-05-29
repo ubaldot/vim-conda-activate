@@ -67,8 +67,50 @@ from [vim-conda](https://github.com/cjrh/vim-conda) source code.
 ==============================================================================
 CONTRIBUTING                                     *CondaActivateContributing*
 
-Feel free to send a PR if have any improvement ideas.
+The  trickiest part is to track the changes of conda.
+You should maintain this plugin in two steps:
+
+1. :echo $CONDA_ENV_VARIABLES for all the env variables that conda
+   changes. Observe how they change in response to a change of virtual
+   environment and adjust the vim scripts accordingly.
+
+2. :echo py3eval(sys.path). Again, see how this changes when you switch
+   virtual environment and adapt the scripts.
+
+3. The trickiest is with Windows because the folder structure is fairly
+   different than in MacOSX and Linux.
+
+Anyway, feel free to send a PR if have any improvement ideas.
 
 ==============================================================================
 LICENSE                                            *CondaActivateLicense*
-Same as Vim.
+
+BSD 3-Clause License
+
+Copyright (c) 2023, Ubaldo Tiberi.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright notice, this
+  list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above copyright notice,
+  this list of conditions and the following disclaimer in the documentation
+  and/or other materials provided with the distribution.
+
+* Neither the name of the copyright holder nor the names of its
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.

@@ -28,7 +28,7 @@ Be sure that you get `1` in response to  `:echo has('python3')` and
 
 If it won't happen, then you have to set the `pythonthreedll` and
 `pythonthreehome` options in Vim.
-See `:h pythonthreedll` and `:h pythonthreehome`.<br><br>
+See `:h pythonthreedll` and `:h pythonthreehome`.<br><br><br>
 
 
 >**Note for Windows users**.<br>
@@ -70,7 +70,8 @@ from [vim-conda](https://github.com/cjrh/vim-conda) source code.
 
 ## Contributing
 Feel free to send a PR if have any improvement ideas.
+For more info check `:h condaactivate.txt`.
 
 
 ## License
-Same as Vim.
+BSD-3 Clause.
