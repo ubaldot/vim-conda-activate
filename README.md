@@ -10,13 +10,25 @@ Conda-activate picks the inheritance of
 [vim-conda](https://github.com/cjrh/vim-conda) by providing the same features
 in a Vim9 fashion.  It further accommodates changes that `conda` experienced
 throughout the years.
-The plugin has been tested on **Conda 23.3.1**.
+This plugin has been tested on **Conda 23.3.1**.
 
 Conda-Activate set various environment variables such as `$CONDA_DEFAULT_ENV,
 $CONDA_PREFIX`, `$PATH`, etc., and set the
 `pythonthreehome` and `pythonthreedll` options.
 
-The internal `sys.path` is also set for Linux and MacOSX, not yet for Windows.
+The internal `sys.path` is also set for Linux and MacOSX, but not yet for Windows.
+
+
+## Requirements
+You need *conda* and *Vim9*.<br>
+
+You also need  your `python` environment set properly.
+Be sure that you get `1` in response to  `:echo has('python3')` and
+ `Hello World` in response to `:python3 print('Hello World')`.
+
+If it won't happen, then you have to set the `pythonthreedll` and
+`pythonthreehome` options in Vim.
+See `:h pythonthreedll` and `:h pythonthreehome`.
 
 >**Note for Windows users**.<br>
 >Be sure to start vim (or gvim) from an *Anaconda* or an *Anaconda powershell*
@@ -40,16 +52,6 @@ The internal `sys.path` is also set for Linux and MacOSX, not yet for Windows.
 >Finally, in the list of all the available virtual environments, the ones called
 >like `Miniconda3`, `Anaconda`, etc. represent the `base` environment.
 
-## Requirements
-You need *conda* and *Vim9*.<br>
-
-You also need  your `python` environment set properly.
-Be sure that you get `1` in response to  `:echo has('python3')` and
- `Hello World` in response to `:python3 print('Hello World')`.
-
-If it won't happen, then you have to set the `pythonthreedll` and
-`pythonthreehome` options in Vim.
-See `:h pythonthreedll` and `:h pythonthreehome`.
 
 ## Usage
 This plugin has one command `CondaActivate` that take one optional argument:
