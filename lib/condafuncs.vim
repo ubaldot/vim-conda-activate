@@ -111,6 +111,7 @@ export def SetEnvVariables(env: string, prefix: string)
             remove(g:python_sys_path, index(g:python_sys_path, path))
         endfor
 
+        # Paths to add
         path1 = prefix .. $"/lib/python{py_ver_nodot}.zip"
         path2 = prefix .. $"/lib/python{py_ver_dot}"
         path3 = prefix .. $"/lib/python{py_ver_dot}/lib-dynload"
