@@ -2,8 +2,9 @@ vim9script
 
 export def SetEnvVariablesWin(env: string, prefix: string)
         # This should be the only function of the plugin that kinda depends on the OS
-        # TODO: This is how Windows installs Miniconda: many folders!
+        # This is how Windows installs Miniconda: many folders!
         # I expect this to be uniformed to other OS:s in the future
+        # This is 'base'
         # C:\Users\yt75534\Miniconda3;
         # C:\Users\yt75534\Miniconda3\Library\mingw-w64\bin;
         # C:\Users\yt75534\Miniconda3\Library\usr\bin;
@@ -11,6 +12,7 @@ export def SetEnvVariablesWin(env: string, prefix: string)
         # C:\Users\yt75534\Miniconda3\Scripts;
         # C:\Users\yt75534\Miniconda3\bin;
 
+        # This is 'myenv'
         # C:\Users\yt75534\Miniconda3\envs\myenv;
         # C:\Users\yt75534\Miniconda3\envs\myenv\Library\mingw-w64\bin;
         # C:\Users\yt75534\Miniconda3\envs\myenv\Library\usr\bin;
@@ -18,12 +20,8 @@ export def SetEnvVariablesWin(env: string, prefix: string)
         # C:\Users\yt75534\Miniconda3\envs\myenv\Scripts;
         # C:\Users\yt75534\Miniconda3\envs\myenv\bin;
         #
-        # Then, you have the following that are always present
-        # C:\Users\yt75534\Miniconda3;
+        # Then, you have the following that shall be always present
         # C:\Users\yt75534\Miniconda3\condabin;
-        #
-        # Therefore, if C:\Users\yt75534\Miniconda3 is added and removed, you
-        # always have a second one.
         #
         # 1) Set environment variables
         g:conda_current_env = env
@@ -76,7 +74,6 @@ export def SetEnvVariablesWin(env: string, prefix: string)
 enddef
 
 export def SetEnvVariables(env: string, prefix: string)
-        # This should be the only function of the plugin that kinda depends on the OS
 
         # 1) Set environment variables
         g:conda_current_env = env
@@ -94,15 +91,12 @@ export def SetEnvVariables(env: string, prefix: string)
         $PATH = join(path_lst, ':')
 
         # 2) Set Vim options
-        # TODO: the pythonthreedll is wrong.
+        # TODO: the pythonthreedll looks wrong but it works.
         &pythonthreehome =  prefix
         &pythonthreedll = prefix .. "/bin/python"
         $CONDA_PYTHON_EXE = prefix .. "/bin/python"
 
         # 3) Set internal sys.path
-        # TODO: check python3 print(sys.path). This is weird and may need a
-        # fix.
-        # Do something like
         var py_ver_dot = system('python --version')->matchstr('\d\+.\d\+') # e.g. 3.11
         var py_ver_nodot = substitute(py_ver_dot, '\.', '', 'g') # e.g.  311
         # Paths to remove
@@ -132,7 +126,6 @@ export def SetEnvVariables(env: string, prefix: string)
         # setting environment variables and we already set them.
         # python3 os.environ["CONDA_DEFAULT_ENV"] = vim.eval("g:conda_current_env")
         # python3 os.environ["PATH"] = vim.eval("$PATH")
-        #
 
         # Refresh variables
         g:conda_current_prefix = prefix
@@ -175,6 +168,7 @@ def CondaActivatePopup()
         'callback': CondaActivatePopupCallback,
         })
 enddef
+
 
 export def CondaActivate(...env: list<string>)
     if empty(env)
