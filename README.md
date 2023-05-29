@@ -21,18 +21,21 @@ The internal `sys.path` is also set for Linux and MacOSX, not yet for Windows.
 >**Note for Windows users**.<br>
 >Be sure to start vim (or gvim) from an *Anaconda* or an *Anaconda powershell*
 >prompt.<br>
->If you start vim/gvim by double clicking on their icons or from an ordinary
->`cmd.exe` or `powershell` shell without activating any environment, then
->`conda` won't be initialized and the plugin will not work.
+>If you start *vim* or *gvim* by double clicking on their icons or from an ordinary
+>`cmd.exe` or `powershell` shell where `conda` no virtual
+> environment is activated, then this plugin will not work.
 >
 >If you really want to open vim/gvim through a double clickable icon, then
 >consider to create a batch file like the following:
 >
 >```
 >@echo off
->call C:\Users\yt75534\Miniconda3\condabin\activate.bat C:\Users\yt75534\Miniconda3\envs\myenv
+>call C:\Users\yourname\Miniconda3\condabin\activate.bat C:\Users\yourname\Miniconda3\envs\myenv
 >gvim
 >```
+>
+> Such a batch file will simply activate a virtual environment first, and then
+> will starrt gvim. At that point, you can freely use this plugin.
 >
 >Finally, in the list of all the available virtual environments, the ones called
 >like `Miniconda3`, `Anaconda`, etc. represent the `base` environment.
