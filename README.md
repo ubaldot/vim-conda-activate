@@ -37,10 +37,10 @@ See `:h pythonthreedll` and `:h pythonthreehome`.<br><br><br>
 >If you start *vim* or *gvim* from an ordinary
 >`cmd.exe` or `powershell` shell where `conda` no virtual
 > environment is activated, then this plugin will not work.
-> The same if you start them by double-clicking on their icons.
 >
->If you really want to open vim/gvim through a double clickable icon, then
->consider to create a batch file like the following:
+> The same happens if you start them by double-clicking on their icons.
+>If you want to open vim/gvim through clickable icon, then
+>consider to create a batch file with something like the following content:
 >
 ```
 @echo off
@@ -48,10 +48,10 @@ call C:\Users\yourname\Miniconda3\condabin\activate.bat C:\Users\yourname\Minico
 gvim
 ```
 >
-> Such a batch file will simply activate a virtual environment first, and then
-> will starrt gvim. At that point, you can freely use this plugin.
+> Such a batch file activate a virtual environment first, and then
+> start gvim.
 >
->Finally, in the list of all the available virtual environments, the ones called
+>Finally, in the list of all the available virtual environments, those named
 >like `Miniconda3`, `Anaconda`, etc. represent the `base` environment.
 
 
@@ -69,7 +69,7 @@ from [vim-conda](https://github.com/cjrh/vim-conda) source code.
 
 
 ## Contributing
-Feel free to send a PR if have any improvement ideas.
+Feel free to send a PR if have any improvement ideas.<br>
 For more info check `:h condaactivate.txt`.
 
 
