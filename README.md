@@ -26,9 +26,9 @@ You also need  your `python` environment set properly.
 Be sure that you get `1` in response to  `:echo has('python3')` and
  `Hello World` in response to `:python3 print('Hello World')`.
 
-If it won't happen, then you have to set the `pythonthreedll` and
-`pythonthreehome` options in Vim.
-See `:h pythonthreedll` and `:h pythonthreehome`.<br><br>
+<!-- If it won't happen, then you have to set the `pythonthreedll` and -->
+<!-- `pythonthreehome` options in Vim. -->
+<!-- See `:h pythonthreedll` and `:h pythonthreehome`.<br><br> -->
 
 
 >**Note for Windows users**.<br>
