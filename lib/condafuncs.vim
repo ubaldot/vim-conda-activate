@@ -123,13 +123,9 @@ export def SetEnvVariables(env: string, prefix: string)
         path4 = prefix .. $"/lib/python{py_ver_dot}/site-packages"
         paths = [path1, path2, path3, path4]
         g:python_sys_path = paths + g:python_sys_path
-
-        echom $"g:python_sys_path: {g:python_sys_path}"
+        # echom $"g:python_sys_path: {g:python_sys_path}"
 
         # Add paths
-        # OBS! This may not be needed!
-        # var new_paths = prefix .. "/lib/site-packages"
-        # g:sys_path = add(g:conda_py_globals, new_paths)
         python3 import vim
         python3 sys.path = vim.eval("g:python_sys_path")
         # The following don't seem to be needed as Vim use the Unix format for
