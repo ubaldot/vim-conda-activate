@@ -6,7 +6,7 @@ Activate Conda virtual environments in Vim.
 </p>
 
 ## Introduction
-Conda-activate picks the inheritance of
+*Conda-activate* picks the inheritance of
 [vim-conda](https://github.com/cjrh/vim-conda) by providing the same features
 in a Vim9 fashion.  It further accommodates changes that `conda` experienced
 throughout the years.
@@ -32,7 +32,7 @@ See `:h pythonthreedll` and `:h pythonthreehome`.<br><br>
 
 
 >**Note for Windows users**.<br>
->Be sure to start vim (or gvim) from an *\*conda* or an *\*conda powershell*
+>Be sure to start vim (or gvim) from a *\*conda* or a *\*conda powershell*
 >prompt.<br>
 >If you start *vim* or *gvim* from an ordinary
 >`cmd.exe` or `powershell` shell where no `conda` virtual
