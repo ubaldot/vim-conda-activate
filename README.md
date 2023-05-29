@@ -12,7 +12,7 @@ in a Vim9 fashion.  It further accommodates changes that `conda` experienced
 throughout the years.
 This plugin has been tested on **Conda 23.3.1**.
 
-Conda-Activate set various environment variables such as `$CONDA_DEFAULT_ENV,
+*Conda-activate* set various environment variables such as `$CONDA_DEFAULT_ENV,
 $CONDA_PREFIX`, `$PATH`, etc., and set the
 `pythonthreehome` and `pythonthreedll` options.
 
@@ -32,7 +32,7 @@ See `:h pythonthreedll` and `:h pythonthreehome`.<br><br>
 
 
 >**Note for Windows users**.<br>
->Be sure to start vim (or gvim) from an *Anaconda* or an *Anaconda powershell*
+>Be sure to start vim (or gvim) from an *\*conda* or an *\*conda powershell*
 >prompt.<br>
 >If you start *vim* or *gvim* from an ordinary
 >`cmd.exe` or `powershell` shell where no `conda` virtual
