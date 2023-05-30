@@ -16,7 +16,7 @@ This plugin has been tested on **Conda 23.3.1**.
 $CONDA_PREFIX`, `$PATH`, etc., and set the
 `pythonthreehome` and `pythonthreedll` options.
 
-The internal `sys.path` is also set for Linux and MacOSX, but not yet for Windows.
+The internal `sys.path` is also set.
 
 
 ## Requirements
