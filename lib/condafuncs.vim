@@ -30,13 +30,6 @@ export def SetEnvVariablesWin(env: string, prefix: string)
         $CONDA_PROMPT_MODIFIER = $"({env})"
 
         # Remove old folders
-        # var path1 = g:conda_current_prefix .. "\\Library\\mingw-w64\\bin"
-        # var path2 = g:conda_current_prefix .. "\\Library\\usr\\bin"
-        # var path3 = g:conda_current_prefix .. "\\Library\\bin"
-        # var path4 = g:conda_current_prefix .. "\\Scripts"
-        # var path5 = g:conda_current_prefix .. "\\bin"
-        # var conda_paths = [g:conda_current_prefix, path1, path2, path3, path4, path5]
-
         var path_lst = split($PATH, ';')
         var path_lst_cleaned = path_lst
                     \->filter('stridx(v:val, g:conda_current_prefix) != 0')
@@ -112,10 +105,10 @@ export def SetEnvVariables(env: string, prefix: string)
 
         # 2) Set Vim options
         # TODO: the pythonthreedll looks wrong but it works.
-        py_ver_dot = system('python --version')->matchstr('\d\+.\d\+') # e.g. 3.11
-        py_ver_nodot = substitute(py_ver_dot, '\.', '', 'g') # e.g.  311
+        var py_ver_dot = system('python --version')->matchstr('\d\+.\d\+') # e.g. 3.11
+        var py_ver_nodot = substitute(py_ver_dot, '\.', '', 'g') # e.g.  311
         &pythonthreehome =  prefix
-        &pythonthreedll = prefix .. $"/bin/python{py_ver_nodot}.dll"
+        &pythonthreedll = prefix .. $"/lib/libpython{py_ver_dot}.dylib"
         $CONDA_PYTHON_EXE = prefix .. "/bin/python"
 
         # 3) Set internal sys.path
