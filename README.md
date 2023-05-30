@@ -16,7 +16,7 @@ This plugin has been tested on **Conda 23.3.1**.
 $CONDA_PREFIX`, `$PATH`, etc., and set the
 `pythonthreehome` and `pythonthreedll` options.
 
-The internal `sys.path` is also set.
+The internal `sys.path` used by Vim is also set.
 
 
 ## Requirements
@@ -50,7 +50,8 @@ gvim
 ```
 >
 >Such a batch file activate a virtual environment first, and then
->start gvim.
+>start gvim. Then, you can freely change environment in Vim through
+>conda-activate.
 >
 >Finally, in the list of all the available virtual environments, those named
 >like `Miniconda3`, `Anaconda`, etc. represent the `base` environment.
