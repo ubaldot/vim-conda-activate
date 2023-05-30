@@ -100,7 +100,6 @@ export def SetEnvVariables(env: string, prefix: string)
         remove(path_lst, index(path_lst, old_path))
         # Conda's python on top in case of multiple python installations
         path_lst = [new_path] + path_lst
-
         $PATH = join(path_lst, ':')
 
         # 2) Set Vim options
@@ -111,19 +110,27 @@ export def SetEnvVariables(env: string, prefix: string)
         &pythonthreedll = prefix .. $"/lib/libpython{py_ver_dot}.dylib"
         $CONDA_PYTHON_EXE = prefix .. "/bin/python"
 
+
         # 3) Set internal sys.path
         # Paths to remove
+        var path1 = g:conda_current_prefix .. $"/lib/python{py_ver_nodot}.zip"
+        var path2 = g:conda_current_prefix .. $"/lib/python{py_ver_dot}"
+        var path3 = g:conda_current_prefix .. $"/lib/python{py_ver_dot}/lib-dynload"
+        var path4 = g:conda_current_prefix .. $"/lib/python{py_ver_dot}/site-packages"
+        var paths = [path1, path2, path3, path4]
         g:python_sys_path = py3eval('sys.path')
-        var python_sys_path_cleaned = g:python_sys_path
-                    \->filter('stridx(v:val, g:conda_current_prefix) != 0')
+
+        for path in paths
+            remove(g:python_sys_path, index(g:python_sys_path, path))
+        endfor
 
         # Paths to add
-        var path1 = prefix .. $"/lib/python{py_ver_nodot}.zip"
-        var path2 = prefix .. $"/lib/python{py_ver_dot}"
-        var path3 = prefix .. $"/lib/python{py_ver_dot}/lib-dynload"
-        var path4 = prefix .. $"/lib/python{py_ver_dot}/site-packages"
-        var paths = [path1, path2, path3, path4]
-        g:python_sys_path = paths + python_sys_path_cleaned
+        path1 = prefix .. $"/lib/python{py_ver_nodot}.zip"
+        path2 = prefix .. $"/lib/python{py_ver_dot}"
+        path3 = prefix .. $"/lib/python{py_ver_dot}/lib-dynload"
+        path4 = prefix .. $"/lib/python{py_ver_dot}/site-packages"
+        paths = [path1, path2, path3, path4]
+        g:python_sys_path = paths + g:python_sys_path
         # echom $"g:python_sys_path: {g:python_sys_path}"
 
         # Add paths
