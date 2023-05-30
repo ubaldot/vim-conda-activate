@@ -12,8 +12,8 @@ in a Vim9 fashion.  It further accommodates changes that `conda` experienced
 throughout the years.
 This plugin has been tested on **Conda 23.3.1**.
 
-*Conda-activate* set various environment variables such as `$CONDA_DEFAULT_ENV,
-$CONDA_PREFIX`, `$PATH`, etc., and set the
+*Conda-activate* set various environment variables such as `$CONDA_DEFAULT_ENV`,
+ `$CONDA_PREFIX`, `$PATH`, etc., and set the
 `pythonthreehome` and `pythonthreedll` options.
 
 The internal `sys.path` used by Vim is also set.
