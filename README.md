@@ -50,8 +50,8 @@ gvim
 ```
 >
 >Such a batch file activate a virtual environment first, and then
->start gvim. Then, you can freely change environment in Vim through
->conda-activate.
+>start gvim. At this point, you can freely change environment inside Vim through
+>*vim-conda-activate*.
 >
 >Finally, in the list of all the available virtual environments, those named
 >like `Miniconda3`, `Anaconda`, etc. represent the `base` environment.
