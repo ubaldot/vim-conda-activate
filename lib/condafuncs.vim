@@ -47,8 +47,8 @@ export def SetEnvVariablesWin(env: string, prefix: string)
 
 
     # 2) Set Vim options ----------------------------------------------
-    var py_ver_dot = system('python --version')->matchstr('\d\+.\d\+') #
-    e.g. 3.11
+    var py_ver_dot = system('python --version')
+                \->matchstr('\d\+.\d\+') # e.g. 3.11
     var py_ver_nodot = substitute(py_ver_dot, '\.', '', 'g') # e.g.  311
     &pythonthreehome =  prefix
     &pythonthreedll = prefix .. $"\\python{py_ver_nodot}.dll"
