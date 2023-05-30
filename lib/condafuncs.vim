@@ -30,47 +30,67 @@ export def SetEnvVariablesWin(env: string, prefix: string)
         $CONDA_PROMPT_MODIFIER = $"({env})"
 
         # Remove old folders
-        var path1 = g:conda_current_prefix .. "\\Library\\mingw-w64\\bin"
-        var path2 = g:conda_current_prefix .. "\\Library\\usr\\bin"
-        var path3 = g:conda_current_prefix .. "\\Library\\bin"
-        var path4 = g:conda_current_prefix .. "\\Scripts"
-        var path5 = g:conda_current_prefix .. "\\bin"
-        var conda_paths = [g:conda_current_prefix, path1, path2, path3, path4, path5]
+        # var path1 = g:conda_current_prefix .. "\\Library\\mingw-w64\\bin"
+        # var path2 = g:conda_current_prefix .. "\\Library\\usr\\bin"
+        # var path3 = g:conda_current_prefix .. "\\Library\\bin"
+        # var path4 = g:conda_current_prefix .. "\\Scripts"
+        # var path5 = g:conda_current_prefix .. "\\bin"
+        # var conda_paths = [g:conda_current_prefix, path1, path2, path3, path4, path5]
 
         var path_lst = split($PATH, ';')
-        for path in conda_paths
-            remove(path_lst, index(path_lst, path))
-        endfor
+        var path_lst_cleaned = path_lst
+                    \->filter('stridx(v:val, g:conda_current_prefix) != 0')
 
         # Add new folders
-        path1 = prefix .. "\\Library\\mingw-w64\\bin"
-        path2 = prefix .. "\\Library\\usr\\bin"
-        path3 = prefix .. "\\Library\\bin"
-        path4 = prefix .. "\\Scripts"
-        path5 = prefix .. "\\bin"
-        conda_paths = [prefix, path1, path2, path3, path4, path5]
-        path_lst = conda_paths + path_lst
-        g:conda_current_prefix = prefix
+        var path1 = prefix .. "\\Library\\mingw-w64\\bin"
+        var path2 = prefix .. "\\Library\\usr\\bin"
+        var path3 = prefix .. "\\Library\\bin"
+        var path4 = prefix .. "\\Scripts"
+        var path5 = prefix .. "\\bin"
+        var conda_paths = [prefix, path1, path2, path3, path4, path5]
+        path_lst = conda_paths + path_lst_cleaned
         $PATH = join(path_lst, ';')
 
         # 2) Set Vim options
-        &pythonthreehome =  g:conda_current_prefix
-        &pythonthreedll = g:conda_current_prefix .. "\\python"
-        $CONDA_PYTHON_EXE = g:conda_current_prefix .. "\\python"
+        var py_ver_dot = system('python --version')->matchstr('\d\+.\d\+') # e.g. 3.11
+        var py_ver_nodot = substitute(py_ver_dot, '\.', '', 'g') # e.g.  311
+        &pythonthreehome =  prefix
+        &pythonthreedll = prefix .. $"\\python{py_ver_nodot}.dll"
+        $CONDA_PYTHON_EXE = prefix .. "\\bin\\python.exe"
 
-        # 3) Set internal sys.path
-        # TODO The following seems to be independent of the current env in
-        # windows, just compare the output of :python3 print(sys.path) from
-        # different venv in windows
-        #
-        # var new_paths = prefix .. "/lib/site-packages"
-        # g:sys_path = add(g:conda_py_globals, new_paths)
-        # python3 import vim
-        # python3 sys.path = vim.eval("g:sys_path")
+
+        # 3) Set vim internal sys.path
+        # Remove previous env paths
+        # TODO: Not sure if
+        # 'C:\Users\yt75534\AppData\Roaming\Python\Python310\site-packages',
+        # shall be actually removed.
+        g:python_sys_path = py3eval('sys.path')
+        g:python_sys_path_cleaned = g:python_sys_path
+                    \->filter('stridx(v:val, g:conda_current_prefix) != 0')
+
+        # Add new paths
+        var sys_path1 = prefix .. $"\\python{py_ver_nodot}.zip"
+        var sys_path2 = prefix .. "\\DLLs"
+        var sys_path3 = prefix .. "\\lib"
+        var sys_path4 = prefix .. "\\lib\\site-packages"
+        var sys_path5 = prefix .. "\\lib\\site-packages\\win32"
+        var sys_path6 = prefix .. "\\lib\\site-packages\\win32\\lib"
+        var sys_path7 = prefix .. "\\lib\\site-packages\\Pythonwin"
+        var sys_paths = [prefix, sys_path1, sys_path2, sys_path3,
+                    \ sys_path4, sys_path5, sys_path6, sys_path7]
+        g:python_sys_path = sys_paths + g:python_sys_path_cleaned
+        # echom $"g:python_sys_path_after: {g:python_sys_path}"
+
+        # Add paths
+        python3 import vim
+        python3 sys.path = vim.eval("g:python_sys_path")
         # The following don't seem to be needed as Vim use the Unix format for
         # setting environment variables and we already set them.
         # python3 os.environ["CONDA_DEFAULT_ENV"] = vim.eval("g:conda_current_env")
         # python3 os.environ["PATH"] = vim.eval("$PATH")
+
+        # Refresh variables
+        g:conda_current_prefix = prefix
 enddef
 
 export def SetEnvVariables(env: string, prefix: string)
@@ -92,32 +112,25 @@ export def SetEnvVariables(env: string, prefix: string)
 
         # 2) Set Vim options
         # TODO: the pythonthreedll looks wrong but it works.
+        py_ver_dot = system('python --version')->matchstr('\d\+.\d\+') # e.g. 3.11
+        py_ver_nodot = substitute(py_ver_dot, '\.', '', 'g') # e.g.  311
         &pythonthreehome =  prefix
-        &pythonthreedll = prefix .. "/bin/python"
+        &pythonthreedll = prefix .. $"/bin/python{py_ver_nodot}.dll"
         $CONDA_PYTHON_EXE = prefix .. "/bin/python"
 
         # 3) Set internal sys.path
-        var py_ver_dot = system('python --version')->matchstr('\d\+.\d\+') # e.g. 3.11
-        var py_ver_nodot = substitute(py_ver_dot, '\.', '', 'g') # e.g.  311
         # Paths to remove
-        var path1 = g:conda_current_prefix .. $"/lib/python{py_ver_nodot}.zip"
-        var path2 = g:conda_current_prefix .. $"/lib/python{py_ver_dot}"
-        var path3 = g:conda_current_prefix .. $"/lib/python{py_ver_dot}/lib-dynload"
-        var path4 = g:conda_current_prefix .. $"/lib/python{py_ver_dot}/site-packages"
-        var paths = [path1, path2, path3, path4]
         g:python_sys_path = py3eval('sys.path')
-
-        for path in paths
-            remove(g:python_sys_path, index(g:python_sys_path, path))
-        endfor
+        var python_sys_path_cleaned = g:python_sys_path
+                    \->filter('stridx(v:val, g:conda_current_prefix) != 0')
 
         # Paths to add
-        path1 = prefix .. $"/lib/python{py_ver_nodot}.zip"
-        path2 = prefix .. $"/lib/python{py_ver_dot}"
-        path3 = prefix .. $"/lib/python{py_ver_dot}/lib-dynload"
-        path4 = prefix .. $"/lib/python{py_ver_dot}/site-packages"
-        paths = [path1, path2, path3, path4]
-        g:python_sys_path = paths + g:python_sys_path
+        var path1 = prefix .. $"/lib/python{py_ver_nodot}.zip"
+        var path2 = prefix .. $"/lib/python{py_ver_dot}"
+        var path3 = prefix .. $"/lib/python{py_ver_dot}/lib-dynload"
+        var path4 = prefix .. $"/lib/python{py_ver_dot}/site-packages"
+        var paths = [path1, path2, path3, path4]
+        g:python_sys_path = paths + python_sys_path_cleaned
         # echom $"g:python_sys_path: {g:python_sys_path}"
 
         # Add paths
