@@ -41,10 +41,14 @@ export def SetEnvVariablesWin(env: string, prefix: string)
     var path3 = prefix .. "\\Library\\bin"
     var path4 = prefix .. "\\Scripts"
     var path5 = prefix .. "\\bin"
-    var conda_paths = [prefix, path1, path2, path3, path4, path5]
+    var path6 = "" # This is /condabin for conda command
+    # Check if /condabin disappeared
+    if index(path_lst_cleaned, g:conda_base_prefix .. "\\condabin") == -1
+        path6 = g:conda_base_prefix .. "\\condabin"
+    endif
+    var conda_paths = [prefix, path1, path2, path3, path4, path5, path6]
     path_lst = conda_paths + path_lst_cleaned
     $PATH = join(path_lst, ';')
-
 
     # 2) Set Vim options ----------------------------------------------
     var py_ver_dot = system('python --version')
