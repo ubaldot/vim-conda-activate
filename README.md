@@ -12,20 +12,13 @@ in a Vim9 fashion.  It further accommodates changes that `conda` experienced
 throughout the years.
 This plugin has been tested on **Conda 23.3.1**.
 
-*Conda-activate* set various environment variables such as `$CONDA_DEFAULT_ENV`,
+*Conda-activate* set various environment variables such as
+`$CONDA_DEFAULT_ENV`,
  `$CONDA_PREFIX`, `$PATH`, etc., and set the
 `pythonthreehome` and `pythonthreedll` options.
 
 The internal `sys.path` used by Vim is also set.
 
->**Warning**
-> Avoid starting Vim from the *base* environment.
-> You may consider to add
-> ```
-> conda activate myenv
-> ```
-> in your .basrc/.zshrc/whatever or to create a `.bat` file if you are a
-> Windows user.
 
 
 ## Requirements
@@ -40,29 +33,25 @@ Be sure that you get `1` in response to  `:echo has('python3')` and
 <!-- See `:h pythonthreedll` and `:h pythonthreehome`.<br><br> -->
 
 
->**Note for Windows users**.<br>
->Be sure to start vim (or gvim) from a *\*conda* or a *\*conda powershell*
->prompt.<br>
->If you start *vim* or *gvim* from an ordinary
->`cmd.exe` or `powershell` shell where no `conda` virtual
->environment is activated, then this plugin will not work.
->
->The same happens if you start *vim/gvim* by double-clicking on their icons.
->Most likely they will start without any *conda* initialization.
->If you want to open vim/gvim through clickable icon, then
->consider to create a batch file with a content similar to the following:
->
+>**Warning**<br>
+> Avoid starting Vim from the *base* environment or from a shell where `conda`
+> has not been initialized.
+> You may consider to add the following:
+```
+conda activate myenv
+```
+> in your .basrc/.zshrc/whatever or to create a `.bat` file like the
+> following:
 ```
 @echo off
-call C:\Users\yourname\Miniconda3\condabin\activate.bat C:\Users\yourname\Miniconda3\envs\myenv
+call C:\Users\yourname\Miniconda3\condabin\activate.bat
+C:\Users\yourname\Miniconda3\envs\myenv
 gvim
 ```
+> if you are a Windows user.
 >
->Such a batch file activate a virtual environment first, and then
->start gvim. At this point, you can freely change environment inside Vim through
->*vim-conda-activate*.
->
->Finally, in the list of all the available virtual environments, those named
+>Finally, only for Windows users, in the list of all the available virtual
+>environments, those named
 >like `Miniconda3`, `Anaconda`, etc. represent the `base` environment.
 
 
