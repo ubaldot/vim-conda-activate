@@ -49,7 +49,7 @@ export def SetEnvVariablesWin(env: string, prefix: string)
     var conda_paths = [prefix, path1, path2, path3, path4, path5, path6]
     path_lst = conda_paths + path_lst_cleaned
     $PATH = join(path_lst, ';')
-    $CONDA_PYTHON_EXE = prefix .. "\\bin\\python.exe"
+    $CONDA_PYTHON_EXE = prefix .. "\\python.exe"
 
     # 2) Set Vim options ----------------------------------------------
     # var py_ver_dot = system('python --version')
