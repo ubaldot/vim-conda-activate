@@ -50,9 +50,9 @@ gvim
 ```
 > if you are a Windows user.
 >
->Finally, only for Windows users, in the list of all the available virtual
->environments, those named
->like `Miniconda3`, `Anaconda`, etc. represent the `base` environment.
+>Finally, only for Windows users, those named
+>like `Miniconda3`, `Anaconda`, etc. represent the `base` environment when the
+>list of available virtual environments shows up.
 
 
 ## Usage
