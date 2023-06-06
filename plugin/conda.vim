@@ -40,6 +40,8 @@ if !exists('g:conda_current_prefix')
     # TODO: Does the following holds for Windows? It should...
     if $CONDA_DEFAULT_ENV ==# "base"
         g:conda_current_prefix = $CONDA_PREFIX
+    elseif has('win32')
+        g:conda_current_prefix = $CONDA_PREFIX .. "\\envs\\" .. $CONDA_DEFAULT_ENV
     else
         g:conda_current_prefix = $CONDA_PREFIX .. "/envs/" .. $CONDA_DEFAULT_ENV
     endif
