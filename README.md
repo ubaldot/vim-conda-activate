@@ -26,14 +26,14 @@ You need *conda* and *Vim9*.<br>
 
 You also need  your `python` environment set properly.
 Be sure that you get `1` in response to  `:echo has('python3')` and
- `Hello World` in response to `:python3 print('Hello World')`.
+ `Hello World` in response to `:python3 print('Hello World')`.<br><br>
 
 <!-- If it won't happen, then you have to set the `pythonthreedll` and -->
 <!-- `pythonthreehome` options in Vim. -->
 <!-- See `:h pythonthreedll` and `:h pythonthreehome`.<br><br> -->
 
 
->**Warning**<br>
+>**Warning**<br><br>
 > Avoid starting Vim from the *base* environment or from a shell where `conda`
 > has not been initialized.
 > You may consider to add the following:
