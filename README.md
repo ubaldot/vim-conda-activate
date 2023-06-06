@@ -17,8 +17,15 @@ This plugin has been tested on **Conda 23.3.1**.
 `pythonthreehome` and `pythonthreedll` options.
 
 ~~The internal `sys.path` used by Vim is also set.~~
-The internal `sys.path` is not changed but it is the same depending on the
-virtual environment used at Vim Startup.
+The internal `sys.path` is not changed, see issue #4.
+However, you can fix it by starting Vim from a certain virtual
+environment or by adding something like the following line:
+
+```
+autocmd VimEnter * :CondaActivate myenv
+```
+
+in your `.vimrc`.
 
 
 ## Requirements
