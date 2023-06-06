@@ -129,10 +129,7 @@ export def SetEnvVariables(env: string, prefix: string)
 
     # 3) Set internal sys.path -----------------------------------
     # Paths to remove
-<<<<<<< HEAD
     #
-=======
->>>>>>> inherit_from_parent_process
     # g:python_sys_path = py3eval('sys.path')
     # g:python_sys_path_cleaned = g:python_sys_path
     #             \->filter('stridx(v:val, g:conda_current_prefix) != 0')
@@ -142,14 +139,11 @@ export def SetEnvVariables(env: string, prefix: string)
     # var path2 = prefix .. $"/lib/python{py_ver_dot}"
     # var path3 = prefix .. $"/lib/python{py_ver_dot}/lib-dynload"
     # var path4 = prefix .. $"/lib/python{py_ver_dot}/site-packages"
-<<<<<<< HEAD
     # var paths = [path1, path2, path3, path4]
     # g:python_sys_path = paths + g:python_sys_path_cleaned
 
-=======
     # var paths = [path1, path2, path3, path4, ".", ".."]
     # g:python_sys_path = paths + g:python_sys_path_cleaned
->>>>>>> inherit_from_parent_process
     # # Add paths
     # python3 import vim
     # python3 sys.path = vim.eval("g:python_sys_path")
