@@ -16,7 +16,9 @@ This plugin has been tested on **Conda 23.3.1**.
  `$CONDA_PREFIX`, `$PATH`, etc., and set the
 `pythonthreehome` and `pythonthreedll` options.
 
-The internal `sys.path` used by Vim is also set.
+~~The internal `sys.path` used by Vim is also set.~~
+The internal `sys.path` is not changed but it is the same depending on the
+virtual environment used at Vim Startup.
 
 
 ## Requirements
