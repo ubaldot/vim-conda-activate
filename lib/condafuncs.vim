@@ -65,25 +65,25 @@ export def SetEnvVariablesWin(env: string, prefix: string)
     # TODO: Not sure if
     # 'C:\Users\yt75534\AppData\Roaming\Python\Python310\site-packages',
     # shall be actually removed.
-    # g:python_sys_path = py3eval('sys.path')
-    # g:python_sys_path_cleaned = g:python_sys_path
-    #             \->filter('stridx(v:val, g:conda_current_prefix) != 0')
+    g:python_sys_path = py3eval('sys.path')
+    g:python_sys_path_cleaned = g:python_sys_path
+                \->filter('stridx(v:val, g:conda_current_prefix) != 0')
 
-    # # Define new paths
-    # var sys_path1 = prefix .. $"\\python{py_ver_nodot}.zip"
-    # var sys_path2 = prefix .. "\\DLLs"
-    # var sys_path3 = prefix .. "\\lib"
-    # var sys_path4 = prefix .. "\\lib\\site-packages"
-    # var sys_path5 = prefix .. "\\lib\\site-packages\\win32"
-    # var sys_path6 = prefix .. "\\lib\\site-packages\\win32\\lib"
-    # var sys_path7 = prefix .. "\\lib\\site-packages\\Pythonwin"
-    # var sys_paths = [prefix, sys_path1, sys_path2, sys_path3,
-    #             \ sys_path4, sys_path5, sys_path6, sys_path7]
-    # g:python_sys_path = sys_paths + g:python_sys_path_cleaned
+    # Define new paths
+    var sys_path1 = prefix .. $"\\python{py_ver_nodot}.zip"
+    var sys_path2 = prefix .. "\\DLLs"
+    var sys_path3 = prefix .. "\\lib"
+    var sys_path4 = prefix .. "\\lib\\site-packages"
+    var sys_path5 = prefix .. "\\lib\\site-packages\\win32"
+    var sys_path6 = prefix .. "\\lib\\site-packages\\win32\\lib"
+    var sys_path7 = prefix .. "\\lib\\site-packages\\Pythonwin"
+    var sys_paths = [prefix, sys_path1, sys_path2, sys_path3,
+                \ sys_path4, sys_path5, sys_path6, sys_path7, '.', '..']
+    g:python_sys_path = sys_paths + g:python_sys_path_cleaned
 
-    # # Add paths to sys.path
-    # python3 import vim
-    # python3 sys.path = vim.eval("g:python_sys_path")
+    # Add paths to sys.path
+    python3 import vim
+    python3 sys.path = vim.eval("g:python_sys_path")
 
     # Refresh variables
     g:conda_current_prefix = prefix
@@ -130,23 +130,21 @@ export def SetEnvVariables(env: string, prefix: string)
     # 3) Set internal sys.path -----------------------------------
     # Paths to remove
     #
-    # g:python_sys_path = py3eval('sys.path')
-    # g:python_sys_path_cleaned = g:python_sys_path
-    #             \->filter('stridx(v:val, g:conda_current_prefix) != 0')
+    g:python_sys_path = py3eval('sys.path')
+    g:python_sys_path_cleaned = g:python_sys_path
+                \->filter('stridx(v:val, g:conda_current_prefix) != 0')
 
-    # # Paths to add
-    # var path1 = prefix .. $"/lib/python{py_ver_nodot}.zip"
-    # var path2 = prefix .. $"/lib/python{py_ver_dot}"
-    # var path3 = prefix .. $"/lib/python{py_ver_dot}/lib-dynload"
-    # var path4 = prefix .. $"/lib/python{py_ver_dot}/site-packages"
-    # var paths = [path1, path2, path3, path4]
-    # g:python_sys_path = paths + g:python_sys_path_cleaned
+    # Paths to add
+    var path1 = prefix .. $"/lib/python{py_ver_nodot}.zip"
+    var path2 = prefix .. $"/lib/python{py_ver_dot}"
+    var path3 = prefix .. $"/lib/python{py_ver_dot}/lib-dynload"
+    var path4 = prefix .. $"/lib/python{py_ver_dot}/site-packages"
+    var paths = [path1, path2, path3, path4, '.', '..']
+    g:python_sys_path = paths + g:python_sys_path_cleaned
 
-    # var paths = [path1, path2, path3, path4, ".", ".."]
-    # g:python_sys_path = paths + g:python_sys_path_cleaned
-    # # Add paths
-    # python3 import vim
-    # python3 sys.path = vim.eval("g:python_sys_path")
+    # Add paths
+    python3 import vim
+    python3 sys.path = vim.eval("g:python_sys_path")
 
     # Refresh variables
     g:conda_current_prefix = prefix
