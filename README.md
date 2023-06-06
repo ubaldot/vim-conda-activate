@@ -18,6 +18,15 @@ This plugin has been tested on **Conda 23.3.1**.
 
 The internal `sys.path` used by Vim is also set.
 
+>**Warning**
+> Avoid starting Vim from the *base* environment.
+> You may consider to add
+> ```
+> conda activate myenv
+> ```
+> in your .basrc/.zshrc/whatever or to create a `.bat` file if you are a
+> Windows user.
+
 
 ## Requirements
 You need *conda* and *Vim9*.<br>
