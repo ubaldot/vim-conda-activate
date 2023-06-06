@@ -51,7 +51,8 @@ export def SetEnvVariablesWin(env: string, prefix: string)
     $PATH = join(path_lst, ';')
 
     # 2) Set Vim options ----------------------------------------------
-    var py_ver_dot = system('python --version')
+    # var py_ver_dot = system('python --version')
+    var py_ver_dot = system($CONDA_PYTHON_EXE .. ' --version')
                 \->matchstr('\d\+.\d\+') # e.g. 3.11
     var py_ver_nodot = substitute(py_ver_dot, '\.', '', 'g') # e.g.  311
     &pythonthreehome =  prefix
@@ -118,7 +119,8 @@ export def SetEnvVariables(env: string, prefix: string)
 
 
     # 2) Set Vim options -----------------------------------
-    var py_ver_dot = system('python --version')
+    # var py_ver_dot = system('python --version')
+    var py_ver_dot = system($CONDA_PYTHON_EXE .. ' --version')
                 \->matchstr('\d\+.\d\+') # e.g. 3.11
     var py_ver_nodot = substitute(py_ver_dot, '\.', '', 'g') # e.g.  311
     &pythonthreehome =  prefix
