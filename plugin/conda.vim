@@ -37,7 +37,7 @@ endif
 if !exists('g:conda_current_prefix')
     # This also may be redundant
     # g:conda_current_prefix =  g:conda_info["active_prefix"]
-    # TODO: Does the following holds for Windows?
+    # TODO: Does the following holds for Windows? It should...
     if $CONDA_DEFAULT_ENV ==# "base"
         g:conda_current_prefix = $CONDA_PREFIX
     else
