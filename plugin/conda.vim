@@ -30,12 +30,19 @@ endif
 
 if !exists('g:conda_current_env')
     # This may be redundant with $CONDA_DEFAULT_ENV
-    g:conda_current_env = g:conda_info["active_prefix_name"]
+    # g:conda_current_env = g:conda_info["active_prefix_name"]
+    g:conda_current_env = $CONDA_DEFAULT_ENV
 endif
 
 if !exists('g:conda_current_prefix')
     # This also may be redundant
-    g:conda_current_prefix =  g:conda_info["active_prefix"]
+    # g:conda_current_prefix =  g:conda_info["active_prefix"]
+    # TODO: Does the following holds for Windows?
+    if $CONDA_DEFAULT_ENV ==# "base"
+        g:conda_current_prefix = $CONDA_PREFIX
+    else
+        g:conda_current_prefix = $CONDA_PREFIX .. "/envs/" .. $CONDA_DEFAULT_ENV
+    endif
 endif
 
 if !exists('g:conda_prefixes') && !exists('g:conda_envs')
