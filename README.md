@@ -39,7 +39,7 @@ Be sure that you get `1` in response to  `:echo has('python3')` and
 > Vim shall be started from an activated virtual environment.
 > Don't start Vim from the *base* environment or from a shell where `conda`
 > has not been initialized!
-> To avoid such scenarios, you may consider to add the following
+> To be safe, you may consider to add the following
 > in your *.basrc/.zshrc/whatever*:
 ```
 conda activate myenv
@@ -51,7 +51,7 @@ call C:\Users\yourname\Miniconda3\condabin\activate.bat C:\Users\yourname\Minico
 gvim
 ```
 > or something similar if you are a Windows user.
-> For the latter users, names like `Miniconda3`, `Anaconda`, etc. in the
+> For such users, names like `Miniconda3`, `Anaconda`, etc. in the
 > list of available virtual environments represent the `base` environment.
 
 
@@ -63,8 +63,9 @@ This plugin has one command `CondaActivate` that takes one (optional) argument:
 ```
 
 It further exposes an *autocommand-event* named `CondaEnvActivated` that
-you can use to perform other actions after `:CondaActivate` has been
-executed, like for example the following:
+you can use to perform other actions just after you activated a virtual
+environment.
+Here is a simple example on how to use it:
 ```
 autocmd! User CondaEnvActivated :echom $"{$CONDA_DEFAULT_ENV} activated."
 ```
