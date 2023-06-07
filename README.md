@@ -44,13 +44,13 @@ Be sure that you get `1` in response to  `:echo has('python3')` and
 ```
 conda activate myenv
 ```
-> or to create a `.bat` file with the following content:
+> or to create a `.bat` file with something like the following content:
 ```
 @echo off
 call C:\Users\yourname\Miniconda3\condabin\activate.bat C:\Users\yourname\Miniconda3\envs\myenv
 gvim
 ```
-> or something similar if you are a Windows user.
+> if you are a Windows user.
 > For such users, names like `Miniconda3`, `Anaconda`, etc. in the
 > list of available virtual environments represent the `base` environment.
 
