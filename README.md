@@ -56,14 +56,14 @@ gvim
 
 
 ## Usage
-This plugin has one command `CondaActivate` that take one optional argument:
+This plugin has one command `CondaActivate` that takes one (optional) argument:
 ```
 :CondaActivate # Show a popup menu
 :CondaActivate myenv # Activate myenv without popup menu
 ```
 
-It further expose an autocommand-event named `CondaEnvActivated` that
-you can use to perform some other actions after `:CondaActivate` has been
+It further exposes an autocommand-event named `CondaEnvActivated` that
+you can use to perform other actions after `:CondaActivate` has been
 executed, like for example the following:
 ```
 autocmd! User CondaEnvActivated :echom $"{$CONDA_DEFAULT_ENV} activated."
