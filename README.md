@@ -44,8 +44,7 @@ conda activate myenv
 > following:
 ```
 @echo off
-call C:\Users\yourname\Miniconda3\condabin\activate.bat
-C:\Users\yourname\Miniconda3\envs\myenv
+call C:\Users\yourname\Miniconda3\condabin\activate.bat C:\Users\yourname\Miniconda3\envs\myenv
 gvim
 ```
 > if you are a Windows user.
