@@ -38,7 +38,8 @@ Be sure that you get `1` in response to  `:echo has('python3')` and
 >**Warning**<br><br>
 > Avoid starting Vim from the *base* environment or from a shell where `conda`
 > has not been initialized.
-> You may consider to add the following:
+> To avoid starting from the `base` environment you may consider 
+> to add the following:
 ```
 conda activate myenv
 ```
@@ -51,9 +52,9 @@ gvim
 ```
 > if you are a Windows user.
 >
->Finally, only for Windows users, those named
->like `Miniconda3`, `Anaconda`, etc. represent the `base` environment when the
->list of available virtual environments shows up.
+>Finally, only for Windows users, names
+>like `Miniconda3`, `Anaconda`, etc. in the
+>list of available virtual environments represent the `base` environment.
 
 
 ## Usage
