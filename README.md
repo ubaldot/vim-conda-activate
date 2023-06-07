@@ -41,15 +41,16 @@ Be sure that you get `1` in response to  `:echo has('python3')` and
 > has not been initialized!
 > To be safe, you may consider to add the following
 > in your *.basrc/.zshrc/whatever*:
-```
-conda activate myenv
-```
+>```
+>conda activate myenv
+>```
 > or to create a `.bat` file with something like the following content:
-```
-@echo off
-call C:\Users\yourname\Miniconda3\condabin\activate.bat C:\Users\yourname\Miniconda3\envs\myenv
-gvim
-```
+>```
+>@echo off
+>call C:\Users\yourname\Miniconda3\condabin\activate.bat C:\Users\yourname\Miniconda3\envs\myenv
+>gvim
+>```
+>
 > if you are a Windows user.
 > For such users, names like `Miniconda3`, `Anaconda`, etc. in the
 > list of available virtual environments represent the `base` environment.
