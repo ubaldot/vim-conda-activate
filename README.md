@@ -19,7 +19,7 @@ throughout the years.
 
 The internal `sys.path` used by Vim is also set.
 
-This plugin has been tested on **Conda 23.3.1** and it work-ish on such a release. 
+This plugin has been tested on **Conda 23.3.1** and it work-ish on such a release.
 Work-ish means that there could be some use-cases where it performs poorly.
 
 
@@ -38,7 +38,7 @@ Be sure that you get `1` in response to  `:echo has('python3')` and
 >**Warning**<br><br>
 > Avoid starting Vim from the *base* environment or from a shell where `conda`
 > has not been initialized.
-> To avoid starting from the `base` environment you may consider 
+> To avoid starting from the `base` environment you may consider
 > to add the following:
 ```
 conda activate myenv
@@ -60,6 +60,13 @@ This plugin has one command `CondaActivate` that take one optional argument:
 ```
 :CondaActivate # Show a popup menu
 :CondaActivate myenv # Activate myenv without popup menu
+```
+
+It further expose an autocommand-event named `CondaEnvActivated` that
+you can use to perform some other actions after `:CondaActivate` has been
+executed, like for example the following:
+```
+autocmd! User CondaEnvActivated :echom $"{$CONDA_DEFAULT_ENV} activated."
 ```
 
 ## Credits

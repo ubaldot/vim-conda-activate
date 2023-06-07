@@ -1,3 +1,4 @@
+:CondaActivate	condaactivate.txt	/*:CondaActivate*
 CondaActivateContents	condaactivate.txt	/*CondaActivateContents*
 CondaActivateContributing	condaactivate.txt	/*CondaActivateContributing*
 CondaActivateCredits	condaactivate.txt	/*CondaActivateCredits*
@@ -5,4 +6,5 @@ CondaActivateIntroduction	condaactivate.txt	/*CondaActivateIntroduction*
 CondaActivateLicense	condaactivate.txt	/*CondaActivateLicense*
 CondaActivateRequirements	condaactivate.txt	/*CondaActivateRequirements*
 CondaActivateUsage	condaactivate.txt	/*CondaActivateUsage*
+CondaEnvActivated	condaactivate.txt	/*CondaEnvActivated*
 condaactivate.txt	condaactivate.txt	/*condaactivate.txt*
