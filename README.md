@@ -10,15 +10,17 @@ Activate Conda virtual environments in Vim.
 [vim-conda](https://github.com/cjrh/vim-conda) by providing the same features
 in a Vim9 fashion.  It further accommodates changes that `conda` experienced
 throughout the years.
-This plugin has been tested on **Conda 23.3.1**.
 
-*Conda-activate* set various environment variables such as
+
+*Conda-activate* sets various environment variables such as
 `$CONDA_DEFAULT_ENV`,
  `$CONDA_PREFIX`, `$PATH`, etc., and set the
 `pythonthreehome` and `pythonthreedll` options.
 
 The internal `sys.path` used by Vim is also set.
 
+This plugin has been tested on **Conda 23.3.1** and it work-ish on such a release. 
+Work-ish means that there could be some use-cases where it performs poorly.
 
 
 ## Requirements
