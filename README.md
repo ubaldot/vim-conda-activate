@@ -50,9 +50,7 @@ conda activate myenv
 call C:\Users\yourname\Miniconda3\condabin\activate.bat C:\Users\yourname\Miniconda3\envs\myenv
 gvim
 ```
-> if you are a Windows user.
->
->Finally, only for Windows users, names
+> if you are a Windows user. For such user, names
 >like `Miniconda3`, `Anaconda`, etc. in the
 >list of available virtual environments represent the `base` environment.
 
