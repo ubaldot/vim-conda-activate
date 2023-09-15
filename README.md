@@ -55,8 +55,8 @@ Be sure that you get `1` in response to  `:echo has('python3')` and
 > For such users, names like `Miniconda3`, `Anaconda`, etc. in the
 > list of available virtual environments represent the `base` environment.
 >
-> Make sure that the version of Python installed in the virtual environment you use to start Vim (In Windows, it might be the `base` environment in default)
-> matches the version of Python used to compile Vim to avoid error like https://github.com/ubaldot/vim-conda-activate/issues/9
+> Make sure that the version of Python installed in the virtual environment you use to start Vim
+> matches the version of Python used to compile Vim.
 
 
 ## Usage
