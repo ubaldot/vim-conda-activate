@@ -710,6 +710,7 @@ class ContinuousDiscrete(mn.Scene):
         # self.add(plane)
 
     def construct(self):
+        self.next_section("Temperature", skip_animations=True)
         # Temperature
         N = 48
         signal = np.random.default_rng().uniform(10, 28, N)
@@ -740,16 +741,17 @@ class ContinuousDiscrete(mn.Scene):
         # dot = mn.Dot(ax.i2gp(3, temperature))
 
         # Tracking stuff
-        t0 = 2.0
+        t0 = 1.2
         dn = mn.DecimalNumber(t0, font_size=32)
 
         x_label_tex = mn.MathTex(r"\textrm{time [h]}", font_size=28)
-        x_label = ax.get_x_axis_label(x_label_tex, direction=mn.DOWN)
+        x_label = ax.get_x_axis_label(x_label_tex, direction=mn.DOWN, buff=0.3)
         y_label = ax.get_y_axis_label(
             mn.MathTex(r"\textrm{Temperature [}^\circ \textrm{C}]}", font_size=28), direction=mn.UL
         )
 
         triangle = mn.VMobject()
+        line = mn.VMobject()
 
         def new_triangle(mob):
             next_mob = ax.get_T_label(x_val=dn.get_value(), graph=temperature)
@@ -757,15 +759,77 @@ class ContinuousDiscrete(mn.Scene):
             dn.next_to(mob, mn.DOWN)
 
         triangle.add_updater(new_triangle, call_updater=True)
+
+        def new_line(mob):
+            p0 = ax.c2p(t0, 0)
+            p1 = ax.c2p(dn.get_value(), 0)
+            next_mob = mn.Line(p0, p1, stroke_color=mn.RED, stroke_opacity=1.0, stroke_width=10)
+            mob.become(next_mob)
+
+        line.add_updater(new_line, call_updater=True)
         # y_label = (
         #     mn.MathTex(r"\textrm{Temperature [}^\circ \textrm{C}]}", font_size=28)
         #     .rotate(90 * mn.DEGREES)
         #     .next_to(ax, mn.LEFT, buff=0.2)
         # )
 
-        self.add(mn.VGroup(ax, x_label, y_label, temperature), triangle)
-        self.play(mn.ChangeDecimalToValue(dn, 4))
+        self.play(mn.Write(mn.VGroup(ax, x_label, y_label, temperature)))
         self.wait()
+        self.play(mn.FadeIn(triangle, line, run_time=0.5))
+        self.play(mn.ChangeDecimalToValue(dn, 4, run_time=3))
+        self.wait()
+        continuous_block = mn.VGroup(ax, x_label, y_label, temperature, line, triangle)
+        continuous_block.generate_target()
+        continuous_block.target.scale(0.5).to_edge(mn.LEFT)
+        self.play(mn.MoveToTarget(continuous_block))
+        self.wait()
+
+        self.next_section("Revenue", skip_animations=False)
+        # Quarterly Revenue
+        mycfg.axis_config["font_size"] = 28
+        mycfg.axis_config["include_numbers"] = False
+        y_range = [0, 100, 10]
+        x_range = [0, 5, 1]
+        ax = mn.Axes(
+            x_range=x_range,
+            y_range=y_range,
+            x_length=10,
+            y_length=5,
+            axis_config=mycfg.axis_config,
+        )
+        ax.get_y_axis().add_numbers()
+
+        x_label_tex = mn.MathTex(r"\textrm{Quarters}", font_size=36).next_to(ax, mn.DOWN, buff=0.2)
+        x_label = ax.get_x_axis_label(x_label_tex, direction=mn.DOWN, buff=0.3)
+
+        y_label_tex = mn.MathTex(r"\textrm{Renevue [M€]}", font_size=36).next_to(ax, mn.LEFT, buff=0.3)
+        y_label = ax.get_y_axis_label(y_label_tex, direction=mn.UL)
+
+        lines = mn.VGroup()
+        for ii in range(*y_range):
+            point = ax.c2p(x_range[1], ii)
+            line = ax.get_horizontal_line(
+                point, line_func=mn.DashedLine, line_config={"stroke_opacity": 0.4, "dash_length": 0.1}
+            )
+            lines.add(line)
+
+        nums = []
+        for ii in range(1, 5):
+            nums.append(ax.get_x_axis().get_number_mobject(ii))
+        # nums = nums.append(ax.get_x_axis().add_numbers([1, 2, 3, 4]))
+        print(nums)
+
+        Q1 = mn.Rectangle(height=3, width=1.2, fill_opacity=0.5).move_to(ax.c2p(1, 0), aligned_edge=mn.DOWN)
+        Q2 = mn.Rectangle(height=2.1, width=1.2, fill_opacity=0.5).move_to(ax.c2p(2, 0), aligned_edge=mn.DOWN)
+        Q3 = mn.Rectangle(height=4.2, width=1.2, fill_opacity=0.5).move_to(ax.c2p(3, 0), aligned_edge=mn.DOWN)
+        Q4 = mn.Rectangle(height=2.6, width=1.2, fill_opacity=0.5).move_to(ax.c2p(4, 0), aligned_edge=mn.DOWN)
+
+        self.add(ax, x_label, y_label, Q1, Q2, Q3, Q4, lines, *nums)
+        self.wait()
+
+        for num in nums:
+            self.play(mn.Indicate(num, scale_factor=2, color=mn.RED))
+            self.wait(0.2)
 
 
 class Summary(mn.Scene):
