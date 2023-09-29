@@ -1,7 +1,8 @@
 import manim as mn  # type:ignore
 import numpy as np  # type:ignore
-from scipy import ndimage
+from scipy import ndimage, fft
 from scipy.io import wavfile
+from scipy.interpolate import PchipInterpolator
 import imageio.v3 as iio
 import sys
 
@@ -53,7 +54,9 @@ class Temperature(mn.Scene):
 
         # Convert the direction [Ts,0,0] to POINTS
         STEP_DIR = ax.c2p(Ts, 0) - ax.c2p(0, 0)
-        self.add(mn.VGroup(ax, x_label, y_label))
+
+        grid = mycfg.get_grid(ax)
+        self.add(mn.VGroup(ax, x_label, y_label, grid))
 
         # INIT
         current_time = 0
@@ -356,10 +359,9 @@ class Discretization_Quantization(mn.Scene):
         continuous_points = [ax.c2p(_x, _y) for _x, _y in zip(times, signal_filt)]
         # print(f"A = {continuous_points[:2]}")
         # A, B, C = ax.c2p(times, signal_filt)
-        continuous_points = zip(*ax.c2p(times, signal_filt))
-        print(f"B = {next(continuous_points)}")
+        # continuous_points = zip(*ax.c2p(times, signal_filt))
         # continuous_signal = mn.VMobject().set_points_smoothly(list(zip(continuous_points[0], continuous_points[1])))
-        continuous_signal = mn.VMobject().set_points_smoothly(list(continuous_points))
+        continuous_signal = mn.VMobject().set_points_smoothly(continuous_points)
 
         self.next_section("Discretization", skip_animations=False)
         # Sampling perios
@@ -439,6 +441,7 @@ class Discretization_Quantization(mn.Scene):
             x0 = p[0]
             y0 = ax.c2p(0, y_range[0], 0)[1] - 0.1
             y1 = ax.c2p(0, y_range[1], 0)[1] + 0.1
+            # TODO: remove DashedLines from q_Dots
             q_Dots.add(mn.VGroup(mn.DashedLine((x0, y0, 0), (x0, y1, 0), stroke_opacity=0.4), mn.Dot(p, color=mn.RED)))
 
         label2 = mn.MathTex(
@@ -449,6 +452,8 @@ class Discretization_Quantization(mn.Scene):
         self.play(mn.FadeIn(q_Dots))
         self.wait()
         self.play(mn.FadeOut(quantized_curve))
+        self.wait()
+        self.play(mn.FadeOut(quantization_lines))
         self.wait()
 
 
@@ -533,11 +538,9 @@ class PixelImage(mn.Scene):
         )  # Number of rows and columns in the grid
 
         # Filled grid
-        # im = iio.imread("IO.jpeg")
-        im = iio.imread("Io2.jpeg")
-        print(im.shape)
+        im = iio.imread("./assets/IO.jpeg")
+        # im = iio.imread("Io2.jpeg")
         im_resized = ndimage.zoom(im, (N_pixels / im.shape[0], N_pixels / im.shape[1], 1), order=3)
-        print(im.shape)
         filled_grid_original = mn.VGroup(
             *[
                 mn.Square(
@@ -567,10 +570,12 @@ class PixelImage(mn.Scene):
 
         self.play(mn.Create(filled_grid))
         self.wait()
-        self.play(mn.Transform(filled_grid, empty_grid))
+        self.play(mn.FadeIn(empty_grid))
+        self.wait()
+        self.play(mn.FadeOut(filled_grid))
         self.wait()
 
-        self.play(filled_grid.animate.to_edge(mn.LEFT))
+        self.play(empty_grid.animate.to_edge(mn.LEFT))
         self.wait(0.5)
 
         self.next_section("Highlight cells", skip_animations=False)
@@ -590,7 +595,7 @@ class PixelImage(mn.Scene):
 
             # On the grid
             ij_val_grid_txt = mn.Text(f"({ii}, {jj})", font_size=24, slant=mn.ITALIC).next_to(
-                filled_grid[cols * ii + jj], mn.UP, buff=0.1
+                empty_grid[cols * ii + jj], mn.UP, buff=0.1
             )
 
             # Nearby "pixel position = "
@@ -602,9 +607,9 @@ class PixelImage(mn.Scene):
 
             self.add(ij_val_txt)
             self.add(ij_val_grid_txt)
-            filled_grid[cols * ii + jj].become(filled_grid[cols * ii + jj].set_stroke(width=3.0))
+            empty_grid[cols * ii + jj].become(empty_grid[cols * ii + jj].set_stroke(width=3.0))
             self.wait(0.8)
-            filled_grid[cols * ii + jj].become(filled_grid[cols * ii + jj].set_stroke(width=0.4))
+            empty_grid[cols * ii + jj].become(empty_grid[cols * ii + jj].set_stroke(width=0.4))
             self.remove(ij_val_txt, ij_val_grid_txt)
 
         self.next_section("Transform in picture", skip_animations=False)
@@ -617,7 +622,7 @@ class PixelImage(mn.Scene):
 
         # filled_grid_original = filled_grid_original.align_to(filled_grid)
         self.play(
-            mn.Transform(filled_grid, filled_grid_original.to_edge(mn.LEFT)),
+            mn.Transform(empty_grid, filled_grid_original.to_edge(mn.LEFT)),
             mn.Write(dependent_seq_txt),
             mn.Write(RGB_values_txt),
         )
@@ -662,15 +667,15 @@ class PixelImage(mn.Scene):
             ).next_to(pixel_position_txt, mn.RIGHT)
 
             ij_val_grid_txt = mn.Text(f"({ii},  {jj})", font_size=24, slant=mn.ITALIC).next_to(
-                filled_grid[cols * ii + jj], mn.UP, buff=0.1
+                empty_grid[cols * ii + jj], mn.UP, buff=0.1
             )
 
-            filled_grid[cols * ii + jj].become(filled_grid[cols * ii + jj].set_stroke(width=3.0))
+            empty_grid[cols * ii + jj].become(empty_grid[cols * ii + jj].set_stroke(width=3.0))
             self.add(RGB_values_txt, RGB_values, ij_val_grid_txt)
             self.add(pixel_zoomed, ij_val_txt, ij_val_grid_txt)
             self.wait()
 
-            filled_grid[cols * ii + jj].become(filled_grid[cols * ii + jj].set_stroke(width=0.4))
+            empty_grid[cols * ii + jj].become(empty_grid[cols * ii + jj].set_stroke(width=0.4))
             self.remove(
                 RGB_values,
                 RGB_values_txt,
@@ -710,7 +715,7 @@ class ContinuousDiscrete(mn.Scene):
         # self.add(plane)
 
     def construct(self):
-        self.next_section("Temperature", skip_animations=True)
+        self.next_section("Temperature", skip_animations=False)
         # Temperature
         N = 48
         signal = np.random.default_rng().uniform(10, 28, N)
@@ -741,11 +746,11 @@ class ContinuousDiscrete(mn.Scene):
         # dot = mn.Dot(ax.i2gp(3, temperature))
 
         # Tracking stuff
-        t0 = 1.2
+        t0 = 0.0
         dn = mn.DecimalNumber(t0, font_size=32)
 
         x_label_tex = mn.MathTex(r"\textrm{time [h]}", font_size=28)
-        x_label = ax.get_x_axis_label(x_label_tex, direction=mn.DOWN, buff=0.3)
+        x_label = ax.get_x_axis_label(x_label_tex, direction=mn.RIGHT, buff=0.3)
         y_label = ax.get_y_axis_label(
             mn.MathTex(r"\textrm{Temperature [}^\circ \textrm{C}]}", font_size=28), direction=mn.UL
         )
@@ -767,69 +772,57 @@ class ContinuousDiscrete(mn.Scene):
             mob.become(next_mob)
 
         line.add_updater(new_line, call_updater=True)
-        # y_label = (
-        #     mn.MathTex(r"\textrm{Temperature [}^\circ \textrm{C}]}", font_size=28)
-        #     .rotate(90 * mn.DEGREES)
-        #     .next_to(ax, mn.LEFT, buff=0.2)
-        # )
 
-        self.play(mn.Write(mn.VGroup(ax, x_label, y_label, temperature)))
+        self.play(mn.Write(mn.VGroup(ax, x_label, y_label, temperature).scale(0.5).to_edge(mn.LEFT)))
         self.wait()
-        self.play(mn.FadeIn(triangle, line, run_time=0.5))
-        self.play(mn.ChangeDecimalToValue(dn, 4, run_time=3))
-        self.wait()
-        continuous_block = mn.VGroup(ax, x_label, y_label, temperature, line, triangle)
-        continuous_block.generate_target()
-        continuous_block.target.scale(0.5).to_edge(mn.LEFT)
-        self.play(mn.MoveToTarget(continuous_block))
-        self.wait()
+        self.play(mn.FadeIn(triangle, line, run_time=0.5), mn.ChangeDecimalToValue(dn, N * Ts, run_time=3))
+        self.wait(2)
 
-        self.next_section("Revenue", skip_animations=False)
         # Quarterly Revenue
+        self.next_section("Revenue", skip_animations=False)
         mycfg.axis_config["font_size"] = 28
         mycfg.axis_config["include_numbers"] = False
         y_range = [0, 100, 10]
         x_range = [0, 5, 1]
-        ax = mn.Axes(
+        axes = mn.Axes(
             x_range=x_range,
             y_range=y_range,
-            x_length=10,
-            y_length=5,
+            x_length=11,
+            y_length=6,
             axis_config=mycfg.axis_config,
         )
-        ax.get_y_axis().add_numbers()
+        axes.get_y_axis().add_numbers()
 
         x_label_tex = mn.MathTex(r"\textrm{Quarters}", font_size=36).next_to(ax, mn.DOWN, buff=0.2)
-        x_label = ax.get_x_axis_label(x_label_tex, direction=mn.DOWN, buff=0.3)
+        x_label = axes.get_x_axis_label(x_label_tex, direction=mn.DOWN, buff=0.3)
 
         y_label_tex = mn.MathTex(r"\textrm{Renevue [M€]}", font_size=36).next_to(ax, mn.LEFT, buff=0.3)
-        y_label = ax.get_y_axis_label(y_label_tex, direction=mn.UL)
-
-        lines = mn.VGroup()
-        for ii in range(*y_range):
-            point = ax.c2p(x_range[1], ii)
-            line = ax.get_horizontal_line(
-                point, line_func=mn.DashedLine, line_config={"stroke_opacity": 0.4, "dash_length": 0.1}
-            )
-            lines.add(line)
+        y_label = axes.get_y_axis_label(y_label_tex, direction=mn.UL)
 
         nums = []
         for ii in range(1, 5):
-            nums.append(ax.get_x_axis().get_number_mobject(ii))
-        # nums = nums.append(ax.get_x_axis().add_numbers([1, 2, 3, 4]))
-        print(nums)
+            nums.append(axes.get_x_axis().get_number_mobject(ii, font_size=32))
 
-        Q1 = mn.Rectangle(height=3, width=1.2, fill_opacity=0.5).move_to(ax.c2p(1, 0), aligned_edge=mn.DOWN)
-        Q2 = mn.Rectangle(height=2.1, width=1.2, fill_opacity=0.5).move_to(ax.c2p(2, 0), aligned_edge=mn.DOWN)
-        Q3 = mn.Rectangle(height=4.2, width=1.2, fill_opacity=0.5).move_to(ax.c2p(3, 0), aligned_edge=mn.DOWN)
-        Q4 = mn.Rectangle(height=2.6, width=1.2, fill_opacity=0.5).move_to(ax.c2p(4, 0), aligned_edge=mn.DOWN)
+        Q1 = mn.Rectangle(height=3, width=1.2, fill_opacity=0.5).move_to(axes.c2p(1, 0), aligned_edge=mn.DOWN)
+        Q2 = mn.Rectangle(height=2.1, width=1.2, fill_opacity=0.5).move_to(axes.c2p(2, 0), aligned_edge=mn.DOWN)
+        Q3 = mn.Rectangle(height=4.2, width=1.2, fill_opacity=0.5).move_to(axes.c2p(3, 0), aligned_edge=mn.DOWN)
+        Q4 = mn.Rectangle(height=2.6, width=1.2, fill_opacity=0.5).move_to(axes.c2p(4, 0), aligned_edge=mn.DOWN)
 
-        self.add(ax, x_label, y_label, Q1, Q2, Q3, Q4, lines, *nums)
+        discrete_block = mn.VGroup(axes, x_label, y_label, Q1, Q2, Q3, Q4, *nums).scale(0.5).to_edge(mn.RIGHT)
+        self.add(discrete_block)
         self.wait()
 
+        triangle = mn.VMobject()
+        self.add(triangle)
         for num in nums:
-            self.play(mn.Indicate(num, scale_factor=2, color=mn.RED))
-            self.wait(0.2)
+            # self.add(mn.Dot(color=mn.RED).next_to(num, mn.UP, buff=0.05))
+            # self.play(mn.Indicate(num, scale_factor=2, color=mn.RED))
+            triangle.become(mn.Triangle(radius=0.1, color=mn.WHITE, fill_opacity=1.0).next_to(num, mn.DOWN))
+            num.become(num.scale(2, about_edge=mn.UP))
+            self.add(mn.Dot(color=mn.RED).next_to(num, mn.UP, buff=0.05))
+            # self.play( num.animate.scale(2, about_edge=mn.UP))
+            self.wait()
+        self.wait()
 
 
 class Summary(mn.Scene):
@@ -840,53 +833,125 @@ class Summary(mn.Scene):
 
     def construct(self):
         # Labels
-        time_tex = mn.Text("Time").rotate(90 * mn.DEGREES)
-        frequency_tex = mn.Text("Frequency").rotate(90 * mn.DEGREES)
-        continuous = mn.Text("Continuous")
-        discrete = mn.Text("Discrete")
+        time_text = mn.Text("Time", font_size=28).rotate(90 * mn.DEGREES).move_to((-6.5, 1.5, 0))
+        frequency_text = mn.Text("Frequency", font_size=28).rotate(90 * mn.DEGREES).move_to((-6.5, -2, 0))
+        continuous_text = mn.Text("Continuous", font_size=28).move_to((-3.5, 3.5, 0))
+        discrete_text = mn.Text("Discrete", font_size=28).move_to((3.5, 3.5, 0))
+
+        self.add(time_text, frequency_text, continuous_text, discrete_text)
+
+        # Dashed Lines
+        x0 = -0.9 * mn.config.frame_width / 2
+        x1 = 0.9 * mn.config.frame_width / 2
+        hline = mn.DashedLine((x0, -0.2, 0), (x1, -0.2, 0), stroke_opacity=0.4, dash_length=0.1)
+
+        y0 = -0.9 * mn.config.frame_height / 2
+        y1 = 0.9 * mn.config.frame_height / 2
+        vline = mn.DashedLine((0, y0, 0), (0, y1, 0), stroke_opacity=0.4, dash_length=0.1)
+
+        self.add(hline, vline)
 
         # Generic signal
         a0 = 2.1
         a1 = 3.3
         a2 = 0.5
-        A = [a0, a1, a2]
 
-        f0 = 20
-        f1 = 60
-        f2 = 35
+        f0 = 2
+        f1 = 3
+        f2 = 3.5
         F = [f0, f1, f2]
 
         phi0 = 0
         phi1 = 1.2
         phi2 = 0.8
-        PHI = [phi0, phi1, phi2]
 
         ti = 0.0
-        tf = 0.4
+        tf = 2.5
         fs = 8 * max(F)
-        t = np.arange(ti, tf, 1 / fs)
-        y = lambda a, f, phi: a * np.sin(2 * np.pi * f * t + phi)
+        times = np.arange(ti, tf, 1 / fs)
+        y = lambda a, f, phi: a * np.sin(2 * np.pi * f * times + phi)
         y0 = y(a0, f0, phi0)
         y1 = y(a1, f1, phi1)
         y2 = y(a2, f2, phi2)
+        vals = y0 + y1 + y2
 
-        # Low pass filter data
-        # Tc = 1.8  # Tc = 1/Fc, OBS! Tc>Ts
-        # signal_filt = np.zeros(len(signal))
-        # signal_filt[0] = signal[0]
-        # for ii, s in enumerate(signal[1:]):
-        #     signal_filt[ii + 1] = (1 - Ts / Tc) * signal_filt[ii] + Ts / Tc * s
+        # Axis config
+        x_length = 4.5
+        y_length = 2.5
+        axis_config_others = {"y_range": [-8, 8, 12 / 4], "x_length": x_length, "y_length": y_length}
+        x_range = [0.0, tf, 1]
+        ax_ct = mn.Axes(axis_config=mycfg.axis_config, x_range=x_range, **axis_config_others).next_to(
+            time_text, mn.RIGHT
+        )
+        t_label = ax_ct.get_x_axis_label(mn.MathTex("t", font_size=28), mn.DR)
 
-        axis_config_others = {
-            "y_range": [0, 32, 32 / 10],
-            "x_length": 11.0,
-            "y_length": 6.0,
-        }
-        x_span = 5
-        x_range = [0.0, x_span, 1]
-        ax_ct = mn.Axes(axis_config=mycfg.axis_config, x_range=x_range, **axis_config_others)
+        y_ct = ax_ct.plot(lambda t: np.interp(t, times, vals), x_range=[times[0], times[-4], 1 / fs])
+        self.add(ax_ct, y_ct, t_label)
 
-        self.add(time_tex)
+        Ts = 0.15
+        ax_dt = ax_ct.copy().shift(7 * mn.RIGHT)
+        y_dt = ax_dt.plot(lambda t: np.interp(t, times, vals), x_range=[times[0], times[-4], 1 / fs])
+        t_label = ax_dt.get_x_axis_label(mn.MathTex("t", font_size=28), mn.DR)
+        # y_dt = y_ct.copy()
+        samples = mn.VGroup(*[mn.Dot(ax_dt.i2gp(t, y_dt)) for t in np.linspace(0, tf - 0.2, int((tf - 0.2) / Ts))])
+        vlines = mn.VGroup(*[ax_dt.get_vertical_line(p.get_center()) for p in samples])
+        self.add(ax_dt, samples, t_label, vlines)
+
+        # Frequency analysis
+        # fft
+        f_vals = fft.rfftn(vals / len(vals))
+        f_vals_pow = [np.abs(x) ** 2 for x in f_vals]
+
+        # Continuous frequency
+        f_bins = fft.rfftfreq(len(vals), Ts)
+
+        axis_config_others = {"y_range": [0.0, 2, np.around(3 / 4, 2)], "x_length": x_length, "y_length": y_length}
+        x_range = [f_bins[0], f_bins[-1], 1]
+        ax_cf = mn.Axes(axis_config=mycfg.axis_config, x_range=x_range, **axis_config_others).next_to(
+            ax_ct, mn.DOWN, buff=1
+        )
+        f_label = ax_cf.get_x_axis_label(mn.MathTex("f", font_size=28), mn.DR)
+
+        interp = PchipInterpolator(f_bins, f_vals_pow)
+        y_cf = ax_cf.plot(interp, x_range=[f_bins[0], f_bins[-1], 0.05])
+        # print(y_cf.
+        self.add(ax_cf, y_cf, f_label)
+
+        # Discrete frequency
+
+        ax_df = ax_cf.copy().shift(7 * mn.RIGHT)
+        f_label = ax_df.get_x_axis_label(mn.MathTex("f", font_size=28), mn.DR)
+
+        steps = []
+        for x, x_next, y in zip(f_bins, f_bins[1:], f_vals_pow):
+            steps.append([x, y, 0])
+            steps.append([x_next, y, 0])
+        steps.append([f_bins[-1], f_vals_pow[-1], 0])
+
+        steps = [ax_df.c2p(x, y, 0) for x, y, _ in steps]
+        print(max(f_vals_pow))
+
+        y_df = mn.VMobject().set_points_as_corners(steps)
+        # y_df = ax_df.plot(lambda f: np.interp(f, f_bins_d, f_vals_pow_d), x_range=[f_bins[0], f_bins[-1], Ts])
+        # y_df = ax_df.plot_line_graph(f_bins_d, f_vals_pow_d)
+        self.add(ax_df, y_df, f_label)
+
+
+class Test(mn.ThreeDScene):
+    def construct(self):
+        y_range = [0, 100, 10]
+        x_range = [0, 5, 1]
+        axes = mn.Axes(
+            x_range=x_range,
+            y_range=y_range,
+            x_length=11,
+            y_length=6,
+        )
+        axes.get_y_axis().add_numbers()
+
+        xgrid = mycfg.get_xgrid(axes)
+        block = mn.VGroup(axes, xgrid)
+        self.add(block.rotate(-20 * mn.DEGREES, mn.UP))
 
 
 # vim: set textwidth=120:
