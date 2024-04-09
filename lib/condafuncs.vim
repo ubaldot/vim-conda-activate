@@ -88,8 +88,7 @@ export def SetEnvVariablesWin(env: string, prefix: string)
     # Refresh variables
     g:conda_current_prefix = prefix
 
-    var user_autocmds = execute('autocmd User')
-    if stridx(user_autocmds, "CondaEnvActivated") != -1
+    if exists(#User#CondaEnvActivated)
         doautocmd User CondaEnvActivated
     endif
 enddef
@@ -153,8 +152,7 @@ export def SetEnvVariables(env: string, prefix: string)
 
     # Refresh variables
     g:conda_current_prefix = prefix
-    var user_autocmds = execute('autocmd User')
-    if stridx(user_autocmds, "CondaEnvActivated") != -1
+    if exists(#User#CondaEnvActivated)
         doautocmd User CondaEnvActivated
     endif
 enddef
