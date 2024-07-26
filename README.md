@@ -35,7 +35,7 @@ Be sure that you get `1` in response to  `:echo has('python3')` and
 <!-- See `:h pythonthreedll` and `:h pythonthreehome`.<br><br> -->
 
 
->**Warning**<br><br>
+> [!CAUTION]
 > Vim shall be started from an activated virtual environment.
 > Don't start Vim from the *base* environment or from a shell where `conda`
 > has not been initialized!
