@@ -1,3 +1,7 @@
+<p align="center">
+<img src="/LookingFor.svg" width="60%" height="60%">
+</p>
+
 # Conda-activate
 Activate Conda virtual environments in Vim.
 
